@@ -1,0 +1,157 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: green;
+    font-family: Helvetica Neue, Helvetica, Arial;
+    color: #FFF;
+    overflow: hidden;
+}
+
+header {
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 53px;
+    background: #121212;
+    padding: 5px;
+    padding-left: 10px;
+    z-index: 10;
+}
+
+header > .topic {
+    position: absolute;
+    text-align: center;
+    top: 13px;
+    right: 0;
+    font-size: 24px;
+    left: 0;
+}
+
+header > h1 {
+    top: 4px;
+    right: 0;
+    left: 10px;
+    position: absolute;
+    font-weight: normal;
+    margin: 0;
+    padding: 0;
+}
+
+footer {
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 56px;
+    padding-left: 10px;
+    text-align: right;
+    z-index: 10;
+}
+
+footer > .raffle {
+    text-align: right;
+    font-size: 24px;
+    background: #e7196e;
+    display: inline-block;
+    padding: 10px;
+    margin-top: 3px;
+}
+
+.cam {
+    width: 411px;
+    height: 308px;
+    border: 6px solid #e7196e;
+    background: #333;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    z-index: 10;
+}
+
+.sidebar {
+    position: absolute;
+    background: #121212;
+    width: 80px;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 0;
+/*
+    background: repeating-linear-gradient(
+            45deg,
+            #333,
+            #333 10px,
+            #222 10px,
+            #222 20px
+    );*/
+}
+
+.followers {
+    position: absolute;
+    right: 0;
+    background: #333;
+    top: 660px;
+    z-index: 100;
+    padding: 10px;
+    padding-right: 20px;
+    font-size: 24px;
+}
+
+.newest-follower-container {
+    position: absolute;
+    right: 0;
+    background: #333;
+    top: 720px;
+    z-index: 100;
+    padding: 10px;
+    padding-right: 20px;
+    font-size: 24px;
+}
+
+.newest-follower, .current-followers {
+    font-weight: bold;
+}
+
+.chat {
+    position: absolute;
+    right: 5px;
+    top: 320px;
+    height: 331px;
+    width: 411px;
+    overflow: hidden;
+    border: 6px solid #e7196e;
+    z-index: 10;
+}
+
+.chat > iframe {
+    margin-top: -50px;
+}
+
+.new-follower {
+    background-color: rgb(231, 35, 110);
+    width: 800px;
+    position: absolute;
+    font-size: 32px;
+    left: 50%;
+    padding: 20px;
+    text-align: center;
+    top: -100px;
+    margin-left: -400px;
+    transition: all 300ms;
+}
+
+highlight {
+    color: rgb(231, 35, 110);
+}
+
+.new-follower > .new-follower-name {
+    font-weight: bold;
+}
+
+.new-follower > .fa {
+    font-size: 50px;
+    position: absolute;
+    left: 26px;
+}

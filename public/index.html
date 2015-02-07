@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="main.css">
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.1.4/zepto.min.js"></script>
+    <script src="app.js"></script>
+</head>
+<body>
+    <header>
+        <h1 class="logo"><b>xray</b>:meta</h1>
+        <!--<h1 class="topic"><highlight>Call of Duty: Advanced Warfare</highlight> Diamond League Clanwar</h1>-->
+        <!--<h1 class="topic"><highlight>Random Saturday</highlight> Einfach ein paar gemütliche Runden</h1>-->
+        <!--<h1 class="topic"><highlight>Random Saturday</highlight> Life Is Strange - Erste Staffel</h1>-->
+        <!--<h1 class="topic"><highlight>Random Saturday</highlight> CoD:AW Exo Survival mit Benni, Martha und Julian</h1>-->
+        <!--<h1 class="topic"><highlight>Random Saturday</highlight> CoD:AW Exo Survival mit Benni, Martha und Julian</h1>-->
+        <!--<h1 class="topic"><i class="fa fa-gamepad"></i> <highlight>Tuesday Night</highlight> mit Benni und Julian <i class="fa fa-gamepad"></i></h1>-->
+        <!--<h1 class="topic"><i class="fa fa-gamepad"></i> <highlight>Hardline Wednesday</highlight> mit Julian <i class="fa fa-gamepad"></i></h1>-->
+        <h1 class="topic"><i class="fa fa-gamepad"></i> <highlight>Fantastic Friday</highlight> mit Martha, Benni und Julian <i class="fa fa-gamepad"></i></h1>
+    </header>
+    <div class="cam"></div>
+
+    <div class="chat">
+        <iframe frameborder="0"
+                scrolling="no"
+                id="chat_embed"
+                src="http://twitch.tv/chat/embed?channel=xraymeta&amp;popout_chat=true"
+                height="500"
+                width="411">
+        </iframe>
+    </div>
+    <div class="new-follower">
+        <i class="fa fa-warning"></i>
+        <span class="new-follower-name">julian</span>, you are awesome!
+    </div>
+    <div class="sidebar"></div>
+    <div class="followers">
+        <i class="fa fa-users"></i>
+        Followers: <span class="current-followers"></span> / <span class="target-followers"></span>
+    </div>
+    <div class="newest-follower-container">
+        <i class="fa fa-heart-o"></i>
+        Latest follower: <span class="newest-follower"></span>
+        <i class="fa fa-heart-o"></i>
+    </div>
+    <footer>
+        <div class="raffle">
+            <i class="fa fa-star-o"></i>
+            20€ Amazon Gutschein Give-Away bei 100 Followern!
+        </div>
+    </footer>
+</body>
+</html>

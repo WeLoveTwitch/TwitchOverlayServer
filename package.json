@@ -1,0 +1,16 @@
+{
+  "name": "TwitchOverlay",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.11.1",
+    "node-twitchtv": "0.0.4",
+    "socket.io": "^1.3.2"
+  }
+}
