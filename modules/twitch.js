@@ -22,7 +22,7 @@ module.exports = function twitch() {
             latestTotal = response._total;
             response.follows.forEach(function(follower) {
                 if(!initial) {
-                    console.log(follower.user.name);
+                    //console.log(follower.user.name);
                 }
                 if(!usernameMap[follower.user.name]) {
                     var newLen = followers.push(follower);
@@ -38,7 +38,7 @@ module.exports = function twitch() {
             // recursion to load all users
             if(initial && offset + limit < response._total) {
                 getFollowers(limit, offset + limit, initial)
-                console.log('recursive init calls', offset, limit, response._total);
+                //console.log('recursive init calls', offset, limit, response._total);
             }
 
             if(initial && offset + limit >= response._total) {
@@ -55,8 +55,6 @@ module.exports = function twitch() {
         get: function(cb) {
             if(!initialized) return false;
             getFollowers(10, latestTotal - 5, false, 'ASC', function(result) {
-                console.log(result);
-
                 var data = {
                     followerTarget: followerTarget,
                     followerCurrent: followers.length - 1,
@@ -66,7 +64,7 @@ module.exports = function twitch() {
                 };
 
                 newFollowers = [];
-                console.log('Added followers:', newFollowers);
+                //console.log('Added followers:', newFollowers);
 
                 cb(data);
             });

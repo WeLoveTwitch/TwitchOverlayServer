@@ -1,9 +1,11 @@
 var express = require('express');
 var app = express();
 var twitch = require('./modules/twitch')();
+var TwitchChat = require('./modules/twitch-chat');
 
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var bot = new TwitchChat();
 
 var sockets = [];
 
@@ -19,7 +21,10 @@ function sendUpdate() {
     twitch.get(function (data) {
         sockets.forEach(function(socket) {
             if(!socketConnected(socket)) return false;
-            socket.emit('update', data);
+            socket.emit('update', {
+              follower: data,
+              chat: bot.getLastLines()
+            });
         });
     });
 }
