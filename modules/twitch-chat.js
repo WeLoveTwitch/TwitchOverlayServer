@@ -121,7 +121,7 @@ proto.getLastLines = function(amount) {
   if(amount > this._lines.length) {
     return this._lines;
   }
-  var lastIndex = this._lines.length - 1;
+  var lastIndex = this._lines.length;
   return this._lines.slice(lastIndex - amount, lastIndex)
 };
 

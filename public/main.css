@@ -92,7 +92,7 @@ footer > .raffle {
     position: absolute;
     right: 0;
     background: #333;
-    top: 660px;
+    bottom: 120px;
     z-index: 100;
     padding: 10px;
     padding-right: 20px;
@@ -103,7 +103,7 @@ footer > .raffle {
     position: absolute;
     right: 0;
     background: #333;
-    top: 720px;
+    bottom: 60px;
     z-index: 100;
     padding: 10px;
     padding-right: 20px;
