@@ -1,6 +1,6 @@
 module.exports = function twitch() {
 
-    var TwitchClient = require("node-twitchtv");
+    var TwitchClient = require("../vendor/node-twitchtv/node-twitchtv");
     var account = require("../config/secrets.js");
     var client = new TwitchClient(account);
 

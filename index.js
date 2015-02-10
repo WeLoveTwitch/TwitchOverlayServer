@@ -19,11 +19,12 @@ io.on('connection', function (socket) {
 
 function sendUpdate() {
     twitch.get(function (data) {
-        sockets.forEach(function(socket) {
-            if(!socketConnected(socket)) return false;
+        sockets.forEach(function (socket) {
+            if (!socketConnected(socket)) return false;
             socket.emit('update', {
-              follower: data,
-              chat: bot.getLastLines()
+                follower: data,
+                chat: bot.getLastLines(),
+                botStore: bot.getStore()
             });
         });
     });
