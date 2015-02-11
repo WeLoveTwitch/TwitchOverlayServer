@@ -9,8 +9,8 @@ TwitchOverlay.controller('HomeController', ['$scope', 'TwitchOverlayServer', fun
             position: 'center',
             width: 1280,
             height: 720,
-            "toolbar": false,
-            "frame": false
+            //"toolbar": false,
+            //"frame": false
         });
     };
 

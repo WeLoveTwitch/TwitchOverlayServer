@@ -74,7 +74,6 @@ proto._saveFollowers = function () {
 
 proto._getLatestFollower = function(cb) {
     this._db.findOne({}).sort({ addedToDatabase: -1}).exec(function(err, follower) {
-        console.log(arguments);
         cb(err, follower)
     });
 };
