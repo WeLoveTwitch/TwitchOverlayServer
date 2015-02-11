@@ -98,12 +98,12 @@
         var schimmelCounter = $('.schimmel-count');
 
         function updateUI(data) {
-            data.newFollowers.forEach(function (follower) {
-                newFollowers.push(follower);
-            });
+            //data.newFollowers.forEach(function (follower) {
+            //    newFollowers.push(follower);
+            //});
             currentFollowers.text(data.followerCurrent);
             targetFollowers.text(data.followerTarget);
-            newestFollower.text(data.followerNewest);
+            newestFollower.text(data.followerNewest.name);
         }
 
         setInterval(checkNewFollower, 100);
