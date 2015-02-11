@@ -1,3 +1,6 @@
 config/secrets.js
 node_modules
 .idea
+bower_components
+index.html
+configuration-frontend/css
