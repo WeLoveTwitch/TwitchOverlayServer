@@ -2,8 +2,8 @@
 
 Warning: Use node 0.10.36 because node-sass has problems with newer versions
   
-  npm install -g n
-  n 0.10
+    npm install -g n
+    n 0.10
 
 # Setup
 
