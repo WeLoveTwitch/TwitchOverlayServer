@@ -1,4 +1,5 @@
 var Client = require('irc').Client;
+var secrets = require('./config/secrets');
 
 function ChatLine(data) {
     this.ts = new Date().getTime();
@@ -19,13 +20,13 @@ function TwitchChat() {
         'tooxificati0n'
     ];
 
-    this._client = new Client('irc.twitch.tv', 'XRAYMETABot', {
+    this._client = new Client('irc.twitch.tv', secrets.bot.nick, {
         channels: [this._channel],
         autoRejoin: true,
         sasl: true,
-        password: 'oauth:zx5mkkszdf3wn6yketx71s3p6lztrv',
-        nick: 'XRAYMETABot',
-        userName: 'XRAYMETABot',
+        password: secrets.bot.password,
+        nick: secrets.bot.nick,
+        userName: secrets.bot.nick,
         autoConnect: true
     });
 
@@ -115,7 +116,7 @@ proto._parseCommand = function (from, message) {
 };
 
 proto._greet = function (nick) {
-    this.say('Hey ' + nick + ', I\'m xraymetabot. I\'m awesome!');
+    this.say('Hey ' + nick + ', I\'m ' + secrets.bot.nick + '. I\'m awesome!');
 };
 
 proto._schimmel = function (nick) {

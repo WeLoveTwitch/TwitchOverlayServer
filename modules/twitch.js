@@ -1,5 +1,5 @@
 var TwitchClient = require("../vendor/node-twitchtv/node-twitchtv");
-var account = require("../config/secrets.js");
+var account = require("../config/secrets.js").api;
 
 function Twitch() {
     this._client = new TwitchClient(account);
