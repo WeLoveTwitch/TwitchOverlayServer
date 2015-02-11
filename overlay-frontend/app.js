@@ -1,5 +1,7 @@
 (function () {
 
+    var config = require('./config/default');
+
     function Chat(elementId) {
         this._elem = $('#' + elementId);
         this._maxHeight = 331;
@@ -64,7 +66,7 @@
     };
 
     $().ready(function () {
-        var socket = io();
+        var socket = io('http://localhost:' + config.port);
         var newFollowers = [];
         var newFollowerShownSince = 0;
         var showNewFollowersFor = 4000;

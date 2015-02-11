@@ -1,4 +1,7 @@
 <div ng-controller="HomeController">
-    <h1>Welcome</h1>
-    <button class="btn" ng-click="openOverlay()">Open Overlay</button>
+    <button class="btn" ng-click="openOverlay()" ng-hide="win">Open Overlay</button>
+    <button class="btn" ng-click="closeOverlay()" ng-hide="!win">Close Overlay</button>
+    <hr>
+    <button class="btn" ng-click="server.start()" ng-hide="server.isRunning()">Start TwitchOverlayServer</button>
+    <span ng-show="server.isRunning()">TwitchOverlayServer started</span>
 </div>

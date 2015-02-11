@@ -4,3 +4,5 @@ node_modules
 bower_components
 index.html
 configuration-frontend/css
+npm-debug.log
+data/*

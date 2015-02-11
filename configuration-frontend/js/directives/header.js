@@ -1,4 +1,4 @@
-TwitchOverlay.directive('header', [function() {
+TwitchOverlay.directive('header', ['TwitchOverlayServer', function(TwitchOverlayServer) {
     return {
         restrict: 'E',
         templateUrl: 'configuration-frontend/templates/directives/header.html',
@@ -15,7 +15,12 @@ TwitchOverlay.directive('header', [function() {
             };
 
             $scope.reload = function() {
+                TwitchOverlayServer.stop();
                 win.reloadIgnoringCache();
+            };
+
+            $scope.closeApplication = function() {
+                gui.App.closeAllWindows();
             };
         }
     }

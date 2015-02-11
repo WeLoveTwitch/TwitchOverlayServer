@@ -14,6 +14,6 @@ TwitchOverlay.config(['$stateProvider', '$urlRouterProvider', function($statePro
         })
 }]);
 
-TwitchOverlay.run(['$rootScope', function($rootScope, ConfigStore, pouchdb) {
+TwitchOverlay.run(['$rootScope', 'TwitchOverlayServer', function($rootScope, ConfigStore, pouchdb, TwitchOverlayServer) {
 
 }]);
