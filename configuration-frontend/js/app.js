@@ -1,4 +1,4 @@
-var TwitchOverlay = angular.module('TwitchOverlay', ['pouchdb', 'ui.router']);
+var TwitchOverlay = angular.module('TwitchOverlay', ['ui.router']);
 
 TwitchOverlay.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
@@ -14,6 +14,6 @@ TwitchOverlay.config(['$stateProvider', '$urlRouterProvider', function($statePro
         })
 }]);
 
-TwitchOverlay.run(['$rootScope', 'TwitchOverlayServer', function($rootScope, ConfigStore, pouchdb, TwitchOverlayServer) {
-
+TwitchOverlay.run(['$rootScope', 'TwitchOverlayServer', function($rootScope, TwitchOverlayServer) {
+    TwitchOverlayServer.start();
 }]);
