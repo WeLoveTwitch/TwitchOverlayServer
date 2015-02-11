@@ -7,8 +7,8 @@ TwitchOverlay.controller('HomeController', ['$scope', 'TwitchOverlayServer', fun
     $scope.openOverlay = function() {
         $scope.win = gui.Window.open('./overlay-frontend/index.html', {
             position: 'center',
-            width: 1920,
-            height: 1080,
+            width: 1280,
+            height: 720,
             "toolbar": false,
             "frame": false
         });

@@ -1,79 +1,81 @@
 var TwitchClient = require("../vendor/node-twitchtv/node-twitchtv");
 var account = require("../config/secrets.js").api;
+var queue = require('queue-async');
 
-function Twitch() {
+function Twitch(db) {
     this._client = new TwitchClient(account);
+    this._db = null;
 
+    var that = this;
+
+    // @TODO: make this somehow configurable by the user
     this._followerTarget = 50;
 
-    this._followers = [];
-    this._usernameMap = {};
-    this._newFollowers = [];
-    this._initialized = false;
-    this._newestFollower = '';
-    this._latestTotal = 0;
-
-    this._getFollowers(100, 0, true, 'ASC');
+    db.ready(function(_db) {
+        that._db = _db;
+    });
 
 }
 
 var proto = Twitch.prototype;
 
 proto.get = function (cb) {
-    if (!this._initialized) return false;
-    this._getFollowers(10, this._latestTotal - 5, false, 'ASC', (function (result) {
-        var data = {
+
+    if(!this._db) {
+        return cb(null, {});
+    }
+
+    this._saveFollowers();
+
+    var q = queue();
+    q.defer(this._getFollowerCount.bind(this));
+    q.defer(this._getLatestFollower.bind(this));
+
+    q.awaitAll((function(err, data) {
+        cb({
+            followerCurrent: data[0],
             followerTarget: this._followerTarget,
-            followerCurrent: this._followers.length - 1,
-            followerNewest: this._newestFollower,
-            newFollowers: this._newFollowers.slice()
-        };
-
-        this._newFollowers = [];
-
-        cb(data);
+            followerNewest: data[1]
+        });
     }).bind(this));
 };
 
-proto._getFollowers = function (limit, offset, initial, direction, callback) {
-    if (!this._initialized && !initial) return false;
+proto._getFollowerCount = function(cb) {
+    this._db.count({}, (function (err, count) {
+        cb.call(this, err, count)
+    }).bind(this));
+};
 
-    // default params
-    direction = direction || 'DESC';
-    callback = callback || function () {};
-    initial = initial || false;
+proto._saveFollowers = function () {
 
     var that = this;
 
     this._client.follows({
-        channel: "xraymeta",
-        limit: limit,
-        offset: offset,
-        direction: direction
+        channel: account.username,
+        limit: 100,
+        offset: 0,
+        direction: 'DESC'
     }, function (err, response) {
-        that._latestTotal = response._total;
+        if(!response) {
+            return false;
+        }
         response.follows.forEach(function (follower) {
-            if (!that._usernameMap[follower.user.name]) {
-                var newLen = that._followers.push(follower);
-                that._usernameMap[follower.user.name] = newLen - 1;
-                if (!initial) {
-                    console.log('adding follower:', follower.user);
-                    that._newestFollower = follower.user.name;
-                    that._newFollowers.push(follower.user.name);
+            var user = follower.user;
+            that._db.find({_id: user._id}, function(err, knowFollowers) {
+                var alreadyExists = knowFollowers.length > 0;
+                if(!alreadyExists) {
+                    user.addedToDatabase = new Date().getTime();
+                    that._db.insert(user);
                 }
-            }
+            });
         });
+    });
+};
 
-        // recursion to load all users
-        if (initial && offset + limit < response._total) {
-            that._getFollowers(limit, offset + limit, initial)
-        }
-
-        if (initial && offset + limit >= response._total) {
-            that._newestFollower = that._followers[that._followers.length - 1].user.name;
-            that._initialized = true;
-        }
-        callback(response.follows);
+proto._getLatestFollower = function(cb) {
+    this._db.findOne({}).sort({ addedToDatabase: -1}).exec(function(err, follower) {
+        console.log(arguments);
+        cb(err, follower)
     });
 };
 

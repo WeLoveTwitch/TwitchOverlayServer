@@ -1,5 +1,5 @@
 var Client = require('irc').Client;
-var secrets = require('./config/secrets');
+var secrets = require('../config/secrets');
 
 function ChatLine(data) {
     this.ts = new Date().getTime();
@@ -11,7 +11,7 @@ function ChatLine(data) {
 
 function TwitchChat() {
 
-    this._channel = '#xraymeta';
+    this._channel = '#' + secrets.bot.channel;
 
     this._trustedUsers = [
         'xraymeta',
