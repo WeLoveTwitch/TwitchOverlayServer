@@ -101,8 +101,13 @@ function retrieveResource(url, callback) {
     request.get({
         url: url
     }, function(err, response, body) {
-        var parsed = JSON.parse(body);
-        if (callback) callback.call(self, null, parsed);
+        var parsed;
+        try {
+            parsed = JSON.parse(body);
+            if (callback) callback.call(self, null, parsed);
+        } catch (e) {
+            // dont do anything at the moment
+        }
     });
 }
 
