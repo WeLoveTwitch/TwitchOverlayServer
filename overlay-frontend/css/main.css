@@ -20,22 +20,22 @@ header {
     color: #FFF;
     display: block;
     position: absolute;
+    height: 100px;
+    z-index: 10;
     left: 0;
     right: 0;
-    height: 53px;
-    background: #121212;
-    padding: 5px;
-    padding-left: 10px;
-    z-index: 10;
+    text-align: center;
 }
 
+header > .topic-container {
+    position: relative;
+    background: #222;
+    top: 6px;
+    padding: 10px;
+}
 header > .topic {
-    position: absolute;
-    text-align: center;
-    top: 13px;
-    right: 0;
-    font-size: 24px;
-    left: 0;
+    padding: 10px;
+    font-size: 16px;
 }
 
 header > h1 {
@@ -49,6 +49,17 @@ header > h1 {
     padding: 0;
 }
 
+.logo {
+    background: url("../img/logo.png");
+    width: 200px;
+    height: 200px;
+    left: 10px;
+    top: 10px;
+    position: absolute;
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
 footer {
     color: #FFF;
     display: block;
@@ -56,7 +67,7 @@ footer {
     left: 0;
     right: 0;
     bottom: 0;
-    height: 56px;
+    height: 34px;
     padding-left: 10px;
     text-align: right;
     z-index: 10;
@@ -64,17 +75,17 @@ footer {
 
 footer > .raffle {
     text-align: right;
-    font-size: 24px;
+    font-size: 12px;
     background: #e7196e;
     display: inline-block;
     padding: 10px;
-    margin-top: 3px;
+    padding-top: 8px;
 }
 
 .cam {
-    width: 411px;
-    height: 308px;
-    border: 6px solid #e7196e;
+    width: 267px;
+    height: 198px;
+    border: 3px solid #e7196e;
     background: #333;
     position: absolute;
     right: 5px;
@@ -82,34 +93,17 @@ footer > .raffle {
     z-index: 10;
 }
 
-.sidebar {
-    position: absolute;
-    background: #121212;
-    width: 80px;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    z-index: 0;
-/*
-    background: repeating-linear-gradient(
-            45deg,
-            #333,
-            #333 10px,
-            #222 10px,
-            #222 20px
-    );*/
-}
-
 .followers {
     color: #FFF;
     position: absolute;
     right: 0;
     background: #333;
-    bottom: 120px;
+    bottom: 76px;
     z-index: 100;
-    padding: 10px;
-    padding-right: 20px;
-    font-size: 24px;
+    padding: 8px;
+    padding-right: 12px;
+    font-size: 12px;
+    height: 34px;
 }
 
 .newest-follower-container {
@@ -117,11 +111,12 @@ footer > .raffle {
     position: absolute;
     right: 0;
     background: #333;
-    bottom: 60px;
+    bottom: 38px;
     z-index: 100;
-    padding: 10px;
-    padding-right: 20px;
-    font-size: 24px;
+    padding: 8px;
+    padding-right: 12px;
+    font-size: 12px;
+    height: 34px;
 }
 
 .newest-follower, .current-followers {
@@ -132,13 +127,14 @@ footer > .raffle {
     background-color: rgb(231, 35, 110);
     width: 800px;
     position: absolute;
-    font-size: 32px;
+    font-size: 12px;
     left: 50%;
     padding: 20px;
     text-align: center;
     top: -100px;
     margin-left: -400px;
     transition: all 300ms;
+    height: 34px;
 }
 
 .schimmel-count-container {
@@ -151,6 +147,7 @@ footer > .raffle {
     padding: 10px;
     padding-right: 20px;
     font-size: 24px;
+    height: 34px;
 }
 
 highlight {
@@ -169,30 +166,34 @@ highlight {
 
 #chat .line {
     background: #222;
-    font-size: 16px;
     border-top: 1px solid #555;
     padding-top: 4px;
     padding-bottom: 4px;
 }
 
 #chat .line span {
-    padding: 4px;
+    padding: 2px;
 }
 
 #chat .line .nick {
     color: #e7196e;
 }
 
+.nick {
+    font-weight: bold;
+}
+
 #chat {
     color: #FFF;
     position: absolute;
     right: 5px;
-    top: 320px;
-    max-height: 331px;
-    width: 411px;
+    top: 206px;
+    max-height: 198px;
+    width: 267px;
+    font-size: 12px;
     height: auto;
     overflow: hidden;
-    border: 6px solid #e7196e;
+    border: 3px solid #e7196e;
     z-index: 10;
     transition: all 200ms ease-out;
 }

@@ -16,8 +16,8 @@
     "toolbar": false,
     "frame": false,
     "title": "TwitchOverlay Frontend",
-    "width": 1920,
-    "height": 1080,
+    "width": 1280,
+    "height": 720,
     "min_width": 1280,
     "min_height": 720
   }
