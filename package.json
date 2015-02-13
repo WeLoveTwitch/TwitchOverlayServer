@@ -2,15 +2,34 @@
   "name": "TwitchOverlay",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.html",
   "scripts": {
+    "start": "nw .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^4.11.1",
+    "gulp": "^3.8.11",
     "irc": "^0.3.9",
+    "nedb": "^1.1.1",
+    "queue-async": "^1.0.7",
     "socket.io": "^1.3.2"
+  },
+  "devDependencies": {
+    "gulp-concat": "^2.4.3",
+    "gulp-inject": "^1.1.1",
+    "gulp-rename": "^1.2.0",
+    "gulp-sass": "^1.3.2",
+    "run-sequence": "^1.0.2"
+  },
+  "window": {
+    "toolbar": false,
+    "frame": false,
+    "width": 1024,
+    "height": 768,
+    "min_width": 1024,
+    "min_height": 768
   }
 }

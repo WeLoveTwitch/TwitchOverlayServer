@@ -1,0 +1,24 @@
+{
+  "name": "TwitchOverlayFrontend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "start": "nw ."
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+  },
+  "devDependencies": {
+  },
+  "window": {
+    "toolbar": false,
+    "frame": false,
+    "title": "TwitchOverlay Frontend",
+    "width": 1280,
+    "height": 720,
+    "min_width": 1280,
+    "min_height": 720
+  }
+}

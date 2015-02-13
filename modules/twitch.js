@@ -1,73 +1,81 @@
-module.exports = function twitch() {
+var TwitchClient = require("../vendor/node-twitchtv/node-twitchtv");
+var account = require("../config/secrets.js").api;
+var queue = require('queue-async');
 
-    var TwitchClient = require("../vendor/node-twitchtv/node-twitchtv");
-    var account = require("../config/secrets.js");
-    var client = new TwitchClient(account);
+function Twitch(db) {
+    this._client = new TwitchClient(account);
+    this._db = null;
 
-    var followerTarget = 50;
+    var that = this;
 
-    var followers = [];
-    var usernameMap = {};
-    var newFollowers = [];
-    var initialized = false;
-    var newestFollower = '';
-    var latestTotal = 0;
+    // @TODO: make this somehow configurable by the user
+    this._followerTarget = 50;
 
-    function getFollowers(limit, offset, initial, direction, callback) {
-        if(!initialized && !initial) return false;
-        direction = direction || 'DESC';
-        callback = callback || function() {};
-        initial = initial || false;
-        client.follows({ channel: "xraymeta", limit: limit, offset: offset, direction: direction }, function(err, response) {
-            latestTotal = response._total;
-            response.follows.forEach(function(follower) {
-                if(!initial) {
-                    //console.log(follower.user.name);
-                }
-                if(!usernameMap[follower.user.name]) {
-                    var newLen = followers.push(follower);
-                    usernameMap[follower.user.name] = newLen - 1;
-                    if(!initial) {
-                        console.log('adding follower:', follower.user);
-                        newestFollower = follower.user.name;
-                        newFollowers.push(follower.user.name);
-                    }
-                }
-            });
+    db.ready(function(_db) {
+        that._db = _db;
+    });
 
-            // recursion to load all users
-            if(initial && offset + limit < response._total) {
-                getFollowers(limit, offset + limit, initial)
-                //console.log('recursive init calls', offset, limit, response._total);
-            }
+}
 
-            if(initial && offset + limit >= response._total) {
-                newestFollower = followers[followers.length - 1].user.name;
-                initialized = true;
-            }
-            callback(response.follows);
-        });
+var proto = Twitch.prototype;
+
+proto.get = function (cb) {
+
+    if(!this._db) {
+        return cb(null, {});
     }
 
-    getFollowers(100, 0, true, 'ASC');
+    this._saveFollowers();
 
-    return Object.freeze({
-        get: function(cb) {
-            if(!initialized) return false;
-            getFollowers(10, latestTotal - 5, false, 'ASC', function(result) {
-                var data = {
-                    followerTarget: followerTarget,
-                    followerCurrent: followers.length - 1,
-                    followerNewest: newestFollower,
-                    newFollowers: newFollowers.slice(),
-                    //newFollowers: ['schnitzel']
-                };
+    var q = queue();
+    q.defer(this._getFollowerCount.bind(this));
+    q.defer(this._getLatestFollower.bind(this));
 
-                newFollowers = [];
-                //console.log('Added followers:', newFollowers);
+    q.awaitAll((function(err, data) {
+        cb({
+            followerCurrent: data[0],
+            followerTarget: this._followerTarget,
+            followerNewest: data[1]
+        });
+    }).bind(this));
+};
 
-                cb(data);
-            });
+proto._getFollowerCount = function(cb) {
+    this._db.count({}, (function (err, count) {
+        cb.call(this, err, count)
+    }).bind(this));
+};
+
+proto._saveFollowers = function () {
+
+    var that = this;
+
+    this._client.follows({
+        channel: account.username,
+        limit: 100,
+        offset: 0,
+        direction: 'DESC'
+    }, function (err, response) {
+        if(!response) {
+            return false;
         }
+        response.follows.forEach(function (follower) {
+            var user = follower.user;
+            that._db.find({_id: user._id}, function(err, knowFollowers) {
+                var alreadyExists = knowFollowers.length > 0;
+                if(!alreadyExists) {
+                    user.addedToDatabase = new Date().getTime();
+                    that._db.insert(user);
+                }
+            });
+        });
     });
 };
+
+proto._getLatestFollower = function(cb) {
+    this._db.findOne({}).sort({ addedToDatabase: -1}).exec(function(err, follower) {
+        cb(err, follower)
+    });
+};
+
+module.exports = Twitch;

@@ -87,7 +87,9 @@ TwitchClient.prototype.channelinfo = function retrieveChannelInformation(params,
 TwitchClient.prototype.follows = function retrieveFollowerInformations(params, callback) {
     if (typeof params.channel == 'undefined' || !params.channel) return false;
 
-    return retrieveResource(twitch_url + "/channels/" + params.channel + "/follows", callback);
+    var limit = params.limit || 25;
+
+    return retrieveResource(twitch_url + "/channels/" + params.channel + "/follows?limit=" + limit, callback);
 };
 
 function retrieveResource(url, callback) {
@@ -99,8 +101,8 @@ function retrieveResource(url, callback) {
     request.get({
         url: url
     }, function(err, response, body) {
-        body = JSON.parse(body);
-        if (callback) callback.call(self, null, body);
+        var parsed = JSON.parse(body);
+        if (callback) callback.call(self, null, parsed);
     });
 }
 
