@@ -1,13 +1,48 @@
 TwitchOverlay.controller('OverlayController', ['$scope', function ($scope) {
-    var config = require('./config/default.js');
 
-    var socket = io('http://localhost:' + config.port);
+    $scope.showConnectionWindow = false;
+    $scope.loaded = false;
 
-    socket.on('update', function (data) {
-        $scope.data = data;
+    $scope.remote = {
+        host: '127.0.0.1',
+        port: '1337'
+    };
 
-        if(!$scope.$$phase) {
-            $scope.$apply();
-        }
-    });
+    $scope.connect = function() {
+        loadSocketIO($scope.remote.host, $scope.remote.port);
+    };
+
+    if (typeof io !== 'undefined') {
+        initializeSocket($scope.remote.host, $scope.remote.port);
+    } else {
+        $scope.showConnectionWindow = true;
+    }
+
+    function initializeSocket(host, port) {
+        var socket = io('http://' + host + ':' + port);
+        socket.on('update', function (data) {
+            $scope.loaded = true;
+            $scope.data = data;
+
+            if (!$scope.$$phase) {
+                $scope.$apply();
+            }
+        });
+    }
+
+    function loadSocketIO(host, port) {
+        var promise = jQuery.getScript('http://' + host + ':' + port + '/socket.io/socket.io.js');
+        promise.done(function (script) {
+
+            (function() {
+                eval(script);
+            }).call(window);
+
+            initializeSocket(host, port);
+            $scope.showConnectionWindow = false;
+        });
+        promise.fail(function() {
+            console.log('Failed to load socket.io');
+        });
+    }
 }]);

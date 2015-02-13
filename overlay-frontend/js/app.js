@@ -15,5 +15,5 @@ TwitchOverlay.config(['$stateProvider', '$urlRouterProvider', function($statePro
 }]);
 
 TwitchOverlay.run(['$rootScope', function($rootScope) {
-    console.log('asd');
+
 }]);

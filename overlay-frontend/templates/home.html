@@ -42,3 +42,17 @@
         20€ Amazon Gutschein Give-Away bei 100 Followern!
     </div>
 </footer>
+<div class="backdrop" ng-class="{loaded: loaded}"></div>
+<div class="connection-window" ng-show="showConnectionWindow">
+    <form>
+        <div class="form-group">
+            <label for="host">Host</label>
+            <input type="text" id="host" class="form-control" placeholder="localhost" ng-model="remote.host">
+        </div>
+        <div class="form-group">
+            <label for="port">Port</label>
+            <input type="text" id="port" class="form-control" placeholder="1337" ng-model="remote.port">
+        </div>
+        <button type="submit" class="btn btn-default" ng-click="connect()">connect</button>
+    </form>
+</div>
