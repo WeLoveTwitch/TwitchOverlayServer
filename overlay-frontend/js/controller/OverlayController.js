@@ -1,5 +1,12 @@
 TwitchOverlay.controller('OverlayController', ['$scope', function ($scope) {
 
+    var gui = require('nw.gui');
+    var win = gui.Window.get();
+
+    // add system tray icon
+    // hide window by position it somewhere where the user doesn't see it
+    // add hide and show option to system tray icon
+
     $scope.showConnectionWindow = false;
     $scope.loaded = false;
 
@@ -45,4 +52,8 @@ TwitchOverlay.controller('OverlayController', ['$scope', function ($scope) {
             console.log('Failed to load socket.io');
         });
     }
+
+    $scope.showDevTools = function() {
+        win.showDevTools();
+    };
 }]);
