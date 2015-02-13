@@ -8,9 +8,6 @@ function Twitch(db) {
 
     var that = this;
 
-    // @TODO: make this somehow configurable by the user
-    this._followerTarget = 50;
-
     db.ready(function(_db) {
         that._db = _db;
     });
@@ -34,7 +31,6 @@ proto.get = function (cb) {
     q.awaitAll((function(err, data) {
         cb({
             followerCurrent: data[0],
-            followerTarget: this._followerTarget,
             followerNewest: data[1]
         });
     }).bind(this));

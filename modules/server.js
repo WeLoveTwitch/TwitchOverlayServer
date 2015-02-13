@@ -2,6 +2,7 @@ var TwitchChat = require('./twitch-chat');
 var Twitch = require('./twitch');
 var Database = require('./database');
 var io = require('socket.io')();
+var ip = require('ip');
 
 function TwitchOverlayServer(config) {
 
@@ -9,14 +10,29 @@ function TwitchOverlayServer(config) {
 
     this._bot = new TwitchChat();
     this._twitch = new Twitch(new Database('twitch'));
+    var db = new Database('config');
+    this._db = null;
+
+    this._data = {};
 
     this._sockets = [];
 
     io.on('connection', function (socket) {
         that._sockets.push(socket);
+        that._tick();
     });
 
     this._socket = io.listen(config.port);
+
+    db.ready(function (_db) {
+        that._db = _db;
+
+        _db.find({}, function (err, configs) {
+            configs.forEach(function (config) {
+                that._data[config._id] = config.payload;
+            });
+        });
+    });
 
     (function loop() {
         setTimeout(loop, config.serverTick);
@@ -26,18 +42,25 @@ function TwitchOverlayServer(config) {
 
 var proto = TwitchOverlayServer.prototype;
 
-proto._tick = function() {
+proto._tick = function () {
     var that = this;
     this._twitch.get(function (data) {
         that._sockets.forEach(function (socket) {
             if (!that._socketConnected(socket)) {
                 return false;
             }
-            socket.emit('update', {
+
+            var updateData = {
                 follower: data,
                 chat: that._bot.getLastLines(),
                 botStore: that._bot.getStore()
-            });
+            };
+
+            for(var key in that._data) {
+                updateData[key] = that._data[key];
+            }
+
+            socket.emit('update', updateData);
         });
     });
 };
@@ -46,8 +69,27 @@ proto._socketConnected = function (socket) {
     return socket.connected;
 };
 
-proto.destroy = function() {
+proto.destroy = function () {
     this._socket.engine.close()
 };
+
+proto.setConfig = function (name, payload) {
+    this._data[name] = payload;
+    var that = this;
+    this._db.find({_id: name}, function (err, docs) {
+        console.log(arguments);
+        if (docs.length > 0) {
+            that._db.update({_id: name}, {_id: name, payload: payload});
+        } else {
+            that._db.insert({_id: name, payload: payload});
+        }
+    });
+};
+
+proto.getConfig = function (name) {
+    return this._data[name] || null;
+};
+
+proto.getIp = ip.address;
 
 module.exports = TwitchOverlayServer;

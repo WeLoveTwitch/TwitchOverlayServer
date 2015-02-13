@@ -1,0 +1,17 @@
+<div ng-controller="ConfigurationController">
+    <form>
+        <div class="form-group">
+            <label for="topic">Topic</label>
+            <input type="text" id="topic" class="form-control" placeholder="your topic" ng-model="topic">
+        </div>
+        <div class="form-group">
+            <label for="follower-target">Follower Target</label>
+            <input type="text" id="follower-target" class="form-control" placeholder="100" ng-model="followerTarget">
+        </div>
+        <div class="form-group">
+            <label for="subline">Subline</label>
+            <input type="text" id="subline" class="form-control" placeholder="Your awesome subline" ng-model="subline">
+        </div>
+        <button type="submit" class="btn btn-default" ng-click="save()">save</button>
+    </form>
+</div>

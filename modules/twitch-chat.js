@@ -12,6 +12,7 @@ function ChatLine(data) {
 function TwitchChat() {
 
     this._channel = '#' + secrets.bot.channel;
+    this._allLines = [];
 
     this._trustedUsers = [
         'xraymeta',
@@ -39,6 +40,12 @@ function TwitchChat() {
     this._client.connect();
 
     this._client.addListener('message', function (from, to, message, data) {
+        if(that._isSpam(from, message)) return false;
+        that._allLines.push({from: from, message: message});
+        if(that._allLines > 50) {
+            that._allLines.shift();
+        }
+
         if (that._isCommand(message)) {
             that._parseCommand(from, message);
         }
@@ -76,9 +83,18 @@ var proto = TwitchChat.prototype;
 
 proto._addLine = function (data) {
     var newLine = new ChatLine(data);
-    if (this._checkForDuplicate(newLine) === false) {
-        this._lines.push(newLine);
+    this._lines.push(newLine);
+};
+
+proto._isSpam = function(from, message) {
+    var ts = new Date().getTime();
+    for (var i = 0; i < this._lines.length; i++) {
+        var line = this._lines[i];
+        if (Math.floor(line.ts / 1500) === Math.floor(ts / 1500) && line.user === from && line.message === message) {
+            return true;
+        }
     }
+    return false;
 };
 
 proto.say = function (text) {
@@ -88,16 +104,6 @@ proto.say = function (text) {
         user: 'bot',
         nick: 'bot'
     });
-};
-
-proto._checkForDuplicate = function (obj) {
-    for (var i = 0; i < this._lines.length; i++) {
-        var line = this._lines[i];
-        if (Math.floor(line.ts / 1000) === Math.floor(obj.ts / 1000) && line.user === obj.user && line.message === line.message) {
-            return true;
-        }
-    }
-    return false;
 };
 
 proto._isCommand = function (message) {
@@ -111,7 +117,6 @@ proto._parseCommand = function (from, message) {
         action: args.shift(),
         args: args
     };
-    console.log(cmd);
     this._triggerAction(cmd);
 };
 

@@ -1,7 +1,26 @@
-<div ng-controller="HomeController">
-    <button class="btn" ng-click="openOverlay()" ng-hide="win">Open Overlay</button>
-    <button class="btn" ng-click="closeOverlay()" ng-hide="!win">Close Overlay</button>
-    <hr>
-    <button class="btn" ng-click="server.start()" ng-hide="server.isRunning()">Start TwitchOverlayServer</button>
-    <span ng-show="server.isRunning()">TwitchOverlayServer started</span>
+<div class="row">
+    <div class="col-md-6 col-lg-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Configuration
+            </div>
+            <div class="panel-body" ng-include="'configuration-frontend/templates/configuration.html'"></div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Server
+            </div>
+            <div class="panel-body" ng-controller="HomeController">
+                <button class="btn" ng-click="openOverlay()" ng-hide="win">Open Overlay</button>
+                <button class="btn" ng-click="closeOverlay()" ng-hide="!win">Close Overlay</button>
+                <hr>
+                <button class="btn" ng-click="server.start()" ng-hide="server.isRunning()">Start TwitchOverlayServer</button>
+                <span ng-show="server.isRunning()">
+                    TwitchOverlayServer listening on <span class="label label-default">{{ip}}:{{config.port}}</span>
+                </span>
+            </div>
+        </div>
+    </div>
 </div>
