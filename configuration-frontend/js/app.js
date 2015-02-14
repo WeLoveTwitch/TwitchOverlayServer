@@ -1,6 +1,6 @@
 var TwitchOverlay = angular.module('TwitchOverlay', ['ui.router']);
 
-TwitchOverlay.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+TwitchOverlay.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
 
     'use strict';
 
@@ -14,6 +14,16 @@ TwitchOverlay.config(['$stateProvider', '$urlRouterProvider', function($statePro
         })
 }]);
 
-TwitchOverlay.run(['$rootScope', 'TwitchOverlayServer', function($rootScope, TwitchOverlayServer) {
+TwitchOverlay.run(['$rootScope', 'TwitchOverlayServer', function ($rootScope, TwitchOverlayServer) {
     TwitchOverlayServer.start();
+
+
+    var gui = require('nw.gui');
+    var win = gui.Window.get();
+    var nativeMenuBar = new gui.Menu({type: "menubar"});
+    try {
+        nativeMenuBar.createMacBuiltin("TwitchOverlay");
+        win.menu = nativeMenuBar;
+    } catch (ex) {}
+
 }]);
