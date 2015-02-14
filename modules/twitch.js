@@ -1,5 +1,5 @@
-var TwitchClient = require("../vendor/node-twitchtv/node-twitchtv");
-var account = require("../config/secrets.js").api;
+var TwitchClient = require('./twitch-api');
+var account = require('../config/secrets').api;
 var queue = require('queue-async');
 
 function Twitch(db) {
