@@ -40,16 +40,14 @@ function TwitchChat() {
     this._client.connect();
 
     this._client.addListener('message', function (from, to, message, data) {
-        if(that._isSpam(from, message)) return false;
-        that._allLines.push({from: from, message: message});
-        if(that._allLines > 50) {
-            that._allLines.shift();
-        }
+        if(that._isSpam(from, message)) return;
+
+        that._addToAllLines(from, message);
+        that._addLine(data);
 
         if (that._isCommand(message)) {
             that._parseCommand(from, message);
         }
-        that._addLine(data);
     });
 
     this._client.addListener('error', function (err) {
@@ -86,7 +84,15 @@ proto._addLine = function (data) {
     this._lines.push(newLine);
 };
 
+proto._addToAllLines = function(from, message) {
+    this._allLines.push({from: from.toLowerCase(), message: message});
+    if(this._allLines > 50) {
+        this._allLines.shift();
+    }
+};
+
 proto._isSpam = function(from, message) {
+    from = from.toLowerCase();
     var ts = new Date().getTime();
     for (var i = 0; i < this._lines.length; i++) {
         var line = this._lines[i];
@@ -99,10 +105,14 @@ proto._isSpam = function(from, message) {
 
 proto.say = function (text) {
     this._client.say(this._channel, text);
+    if(this._isSpam(secrets.bot.nick, text)) {
+        return false;
+    }
+    this._addToAllLines(secrets.bot.nick, text);
     this._addLine({
         message: text,
-        user: 'bot',
-        nick: 'bot'
+        user: secrets.bot.nick,
+        nick: secrets.bot.nick
     });
 };
 
