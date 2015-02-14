@@ -12,8 +12,11 @@
 </head>
 <body ng-app="TwitchOverlay">
 <header></header>
-<div class="container content" ui-view>
+<div class="content">
+    <div ui-view>
 
+    </div>
 </div>
+<div class="activity-stream" ng-include="'configuration-frontend/templates/activity-stream.html'"></div>
 </body>
 </html>

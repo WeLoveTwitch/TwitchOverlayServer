@@ -79,10 +79,14 @@ proto.channelinfo = function retrieveChannelInformation(params, callback) {
 proto.follows = function retrieveFollowerInformations(params, callback) {
     if (typeof params.channel == 'undefined' || !params.channel) return false;
 
-    var limit = params.limit || 25;;
+    var limit = params.limit || 25;
+    var offset = params.offset || 0;
+    var direction = params.direction || 'DESC';
 
     return this._retrieveResource(twitch_url + '/channels/' + params.channel + '/follows', callback, {
-        limit: limit
+        limit: limit,
+        offset: offset,
+        direction: direction
     });
 };
 

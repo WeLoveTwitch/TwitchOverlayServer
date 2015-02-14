@@ -1,0 +1,14 @@
+<div ng-controller="ActivityStreamController">
+    <ul>
+        <li ng-repeat="follower in followers">
+            <div>
+                <strong>{{follower.name}}</strong> is now following you!
+            </div>
+            <div>
+                <small>
+                    {{follower.addedToDatabase | date:'dd.MM.yy HH:mm'}}
+                </small>
+            </div>
+        </li>
+    </ul>
+</div>

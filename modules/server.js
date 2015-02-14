@@ -92,4 +92,8 @@ proto.getConfig = function (name) {
 
 proto.getIp = ip.address;
 
+proto.getModule = function(module) {
+    return this['_' + module];
+};
+
 module.exports = TwitchOverlayServer;

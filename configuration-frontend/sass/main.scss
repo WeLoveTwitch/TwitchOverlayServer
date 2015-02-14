@@ -1,9 +1,15 @@
+@import 'activityStream';
+
 body {
   background-color: #333;
+  overflow: hidden;
 }
 
-.container {
-  margin-top: 40px;
+.content {
+  position: absolute;
+  right: 320px;
+  left: 20px;
+  top: 70px;
 }
 
 * {

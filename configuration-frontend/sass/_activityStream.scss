@@ -1,0 +1,21 @@
+.activity-stream {
+  width: 300px;
+  background: #eeeeee;
+  position: absolute;
+  right: 0;
+  top: 50px;
+  bottom: 0;
+
+  ul, li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    padding: 10px;
+    &:nth-child(2n) {
+      background-color: #dedede;
+    }
+  }
+}

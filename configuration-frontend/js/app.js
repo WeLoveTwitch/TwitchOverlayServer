@@ -14,7 +14,7 @@ TwitchOverlay.config(['$stateProvider', '$urlRouterProvider', function ($statePr
         })
 }]);
 
-TwitchOverlay.run(['$rootScope', 'TwitchOverlayServer', function ($rootScope, TwitchOverlayServer) {
+TwitchOverlay.run(['$rootScope', 'TwitchOverlayServer', 'Tick', function ($rootScope, TwitchOverlayServer, Tick) {
     TwitchOverlayServer.start();
 
 
