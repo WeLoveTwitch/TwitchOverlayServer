@@ -70,6 +70,12 @@ proto.users = function retrieveUserInformation(params, callback) {
     return this._retrieveResource(twitch_url + '/users/' + params.user, callback);
 };
 
+proto.emoticons = function retrieveEmoticons(params, callback) {
+    var url = twitch_url + '/chat/' + params.channel + '/emoticons';
+    console.log(url);
+    return this._retrieveResource(url, callback);
+};
+
 proto.channelinfo = function retrieveChannelInformation(params, callback) {
     if (typeof params.channel == 'undefined' || !params.channel) return false;
 

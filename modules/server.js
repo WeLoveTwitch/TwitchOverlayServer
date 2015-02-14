@@ -20,6 +20,10 @@ function TwitchOverlayServer(config) {
     io.on('connection', function (socket) {
         that._sockets.push(socket);
         that._tick();
+
+        that._twitch.getEmotes(function(emotes) {
+            socket.emit('emotes', emotes);
+        });
     });
 
     this._socket = io.listen(config.port);

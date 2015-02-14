@@ -5,6 +5,7 @@ var queue = require('queue-async');
 function Twitch(db) {
     this._client = new TwitchClient(account);
     this._db = null;
+    this._emotes = null;
 
     var that = this;
 
@@ -14,6 +15,10 @@ function Twitch(db) {
         that._getAllFollowersFromApi(function(followers) {
             that._saveFollowers(followers);
         });
+    });
+
+    that._getEmoticonsFromApi(function(emotes) {
+        that._emotes = emotes;
     });
 
 }
@@ -38,6 +43,14 @@ proto.get = function (cb) {
             latestFollowers: data[2]
         });
     }).bind(this));
+};
+
+proto._getEmoticonsFromApi = function(cb) {
+    console.log('test');
+    this._client.emoticons({channel: account.username }, function(err, emotes) {
+        if(err) return;
+        cb(emotes.emoticons);
+    });
 };
 
 proto._getFollowerCount = function(cb) {
@@ -133,5 +146,13 @@ proto.getFollowers = function(cb) {
         cb(follower)
     });
 };
+
+proto.getEmotes = function(cb) {
+    if(!this._emotes) {
+        return this._getEmoticonsFromApi(cb);
+    }
+    cb(this._emotes);
+};
+
 
 module.exports = Twitch;

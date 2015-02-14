@@ -1,4 +1,4 @@
-TwitchOverlay.controller('OverlayController', ['$scope', function ($scope) {
+TwitchOverlay.controller('OverlayController', ['$scope', '$rootScope', function ($scope, $rootScope) {
 
     var gui = require('nw.gui');
     var win = gui.Window.get();
@@ -34,6 +34,11 @@ TwitchOverlay.controller('OverlayController', ['$scope', function ($scope) {
             if (!$scope.$$phase) {
                 $scope.$apply();
             }
+        });
+
+        socket.on('emotes', function(emotes) {
+            // @TODO: refactor this into a service
+            $rootScope.emotes = emotes;
         });
     }
 
