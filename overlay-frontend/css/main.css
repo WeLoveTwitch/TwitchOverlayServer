@@ -125,16 +125,42 @@ footer > .raffle {
 
 .new-follower {
     background-color: rgb(231, 35, 110);
-    width: 800px;
+    width: 400px;
     position: absolute;
     font-size: 12px;
     left: 50%;
-    padding: 20px;
+    /* padding: 20px; */
     text-align: center;
     top: -100px;
-    margin-left: -400px;
+    margin-left: -200px;
     transition: all 300ms;
-    height: 34px;
+    overflow: hidden;
+    height: 64px;
+}
+
+.new-follower.showAlert {
+    top: 100px;
+}
+
+.new-follower .user-text {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 64px;
+    width: 400px;
+    color: #FFF;
+    font-size: 16px;
+    padding-top: 20px;
+}
+
+.new-follower .user-logo {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 64px;
+    width: 64px;
+    background-repeat: no-repeat;
+    background-size: 100%;
 }
 
 .schimmel-count-container {
@@ -165,14 +191,21 @@ highlight {
 }
 
 #chat .line {
-    background: #222;
-    border-top: 1px solid #555;
+    border-top: 1px solid #333;
     padding-top: 4px;
     padding-bottom: 4px;
 }
 
+#chat .line:first-child {
+    border: none;
+}
+
 #chat .line span {
     padding: 2px;
+}
+
+#chat .line .time {
+    padding-left: 0;
 }
 
 #chat .line .nick {
@@ -199,6 +232,8 @@ highlight {
 }
 
 #chat .line-container {
+    background: #222;
+    padding: 4px;
     position: absolute;
     bottom: 0;
     left: 0;

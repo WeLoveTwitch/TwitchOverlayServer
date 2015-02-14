@@ -14,6 +14,6 @@ TwitchOverlay.config(['$stateProvider', '$urlRouterProvider', function($statePro
         })
 }]);
 
-TwitchOverlay.run(['$rootScope', function($rootScope) {
+TwitchOverlay.run(['$rootScope', 'Tick',function($rootScope, Tick) {
 
 }]);

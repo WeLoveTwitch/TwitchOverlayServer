@@ -26,7 +26,7 @@ TwitchOverlay.directive('chat', [function() {
                 var markup = $(elem).find('.line-container');
                 var container = $(elem).find('#chat');
                 if (markup.height() < _maxHeight) {
-                    container.height(markup.height());
+                    container.height(markup.height() + 6);
                 } else {
                     container.height(_maxHeight);
                 }

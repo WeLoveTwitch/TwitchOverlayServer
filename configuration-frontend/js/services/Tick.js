@@ -5,6 +5,9 @@ TwitchOverlay.service('Tick', ['$rootScope', function($rootScope) {
     (function loop() {
         setTimeout(loop, 1000);
         tick();
+        if(!$rootScope.$$phase) {
+            $rootScope.$apply();
+        }
     })();
 
     function tick() {

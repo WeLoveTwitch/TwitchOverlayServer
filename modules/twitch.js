@@ -34,7 +34,8 @@ proto.get = function (cb) {
     q.awaitAll((function(err, data) {
         cb({
             followerCurrent: data[0],
-            followerNewest: data[1]
+            followerNewest: data[1],
+            latestFollowers: data[2]
         });
     }).bind(this));
 };
@@ -92,7 +93,7 @@ proto._getLatestFollowers = function(cb) {
         }
 
         that._saveFollowers(follower.follows, function() {
-            cb();
+            cb(null, follower.follows);
         });
     });
 };
