@@ -1,4 +1,4 @@
-TwitchOverlay.controller('OverlayController', ['$scope', '$rootScope', function ($scope, $rootScope) {
+TwitchOverlay.controller('OverlayController', ['$scope', '$rootScope', 'Socket', function ($scope, $rootScope, Socket) {
 
     var gui = require('nw.gui');
     var win = gui.Window.get();
@@ -15,47 +15,17 @@ TwitchOverlay.controller('OverlayController', ['$scope', '$rootScope', function 
         port: '1337'
     };
 
+    Socket.on('update', function(data) {
+        $scope.loaded = true;
+        $scope.data = data;
+    });
+
     $scope.connect = function() {
-        loadSocketIO($scope.remote.host, $scope.remote.port);
+        Socket.connect($scope.remote.host, $scope.remote.port);
     };
 
-    if (typeof io !== 'undefined') {
-        initializeSocket($scope.remote.host, $scope.remote.port);
-    } else {
+    if(!Socket.isConnected()) {
         $scope.showConnectionWindow = true;
-    }
-
-    function initializeSocket(host, port) {
-        var socket = io('http://' + host + ':' + port);
-        socket.on('update', function (data) {
-            $scope.loaded = true;
-            $scope.data = data;
-
-            if (!$scope.$$phase) {
-                $scope.$apply();
-            }
-        });
-
-        socket.on('emotes', function(emotes) {
-            // @TODO: refactor this into a service
-            $rootScope.emotes = emotes;
-        });
-    }
-
-    function loadSocketIO(host, port) {
-        var promise = jQuery.getScript('http://' + host + ':' + port + '/socket.io/socket.io.js');
-        promise.done(function (script) {
-
-            (function() {
-                eval(script);
-            }).call(window);
-
-            initializeSocket(host, port);
-            $scope.showConnectionWindow = false;
-        });
-        promise.fail(function() {
-            console.log('Failed to load socket.io');
-        });
     }
 
     $scope.dragOptions = {

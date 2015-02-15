@@ -11,8 +11,9 @@ TwitchOverlay.service('Tick', ['$rootScope', function($rootScope) {
     })();
 
     function tick() {
-        funcs.forEach(function(cb) {
+        funcs = funcs.filter(function(cb) {
             cb();
+            return cb.__callOnce__ !== true;
         });
     }
 
@@ -20,6 +21,10 @@ TwitchOverlay.service('Tick', ['$rootScope', function($rootScope) {
         register: function(cb) {
             funcs.push(cb);
             cb();
+        },
+        registerOnce: function(cb) {
+            cb.__callOnce__ = true;
+            this.register(cb);
         }
     }
 }]);
