@@ -31,6 +31,7 @@ body {
   background: #222222;
   color: #ffffff;
   position: relative;
+  -webkit-app-region: drag;
   .navigation {
     position: absolute;
     left: 0;
@@ -64,6 +65,7 @@ body {
 .header .btn, .header .btn:hover, .header .btn:focus {
   background: #222;
   outline: none;
+  -webkit-app-region: no-drag;
 }
 
 .header .btn:hover {
