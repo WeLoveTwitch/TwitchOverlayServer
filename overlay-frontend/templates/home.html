@@ -1,39 +1,46 @@
-<div class="logo"></div>
+<div class="logo widget" ng-drag="dragOptions"></div>
 
-<header style="-webkit-app-region: drag">
+<header class="widget" ng-drag="dragOptions">
     <span class="topic-container">
         <span class="topic"><i class="fa fa-gamepad"></i> {{data.topic}} <i class="fa fa-gamepad"></i></span>
     </span>
 </header>
 
-<div class="cam"></div>
+<div class="cam widget" ng-drag="dragOptions"></div>
 
 <follower-alert followers="data.follower.latestFollowers"></follower-alert>
-<chat chat-data="data.chat"></chat>
 
-<div class="sidebar"></div>
-<div class="followers">
+<div class="chat widget" ng-drag="dragOptions">
+    <chat chat-data="data.chat"></chat>
+</div>
+
+<div class="followers widget" ng-drag="dragOptions">
     <i class="fa fa-users"></i>
     Followers:
     <span class="current-followers">{{data.follower.followerCurrent}}</span>
     <span ng-show="data.followerTarget > 0"> / <span class="target-followers">{{data.followerTarget}}</span></span>
 </div>
-<div class="newest-follower-container">
+
+<div class="newest-follower-container widget" ng-drag="dragOptions">
     <i class="fa fa-heart-o"></i>
     Latest follower: <span class="newest-follower">{{data.follower.followerNewest.name}}</span>
     <i class="fa fa-heart-o"></i>
 </div>
-<div class="schimmel-count-container hide">
+
+<div class="schimmel-count-container widget hide" ng-drag="dragOptions">
     <i class="fa fa-bar-chart"></i>
     Schimmel Count: <span class="schimmel-count"></span>
 </div>
+
 <footer>
-    <div class="raffle" ng-show="data.subline">
+    <div class="raffle widget" ng-show="data.subline" ng-drag="dragOptions">
         <i class="fa fa-star-o"></i>
         {{data.subline}}
     </div>
 </footer>
+
 <div class="backdrop" ng-class="{loaded: loaded}"></div>
+
 <div class="connection-window" ng-show="showConnectionWindow">
     <form>
         <div class="form-group">
@@ -47,4 +54,5 @@
         <button type="submit" class="btn btn-default" ng-click="connect()">connect</button>
     </form>
 </div>
-<div class="open-debug" ng-click="showDevTools()"></div>
+
+<div class="open-debug widget" ng-click="showDevTools()"></div>

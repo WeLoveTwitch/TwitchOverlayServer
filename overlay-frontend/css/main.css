@@ -7,6 +7,10 @@
     user-select: none;
 }
 
+html, body {
+    height: 100%;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -14,6 +18,11 @@ body {
     font-family: HelveticaNeue-Light, Helvetica, Arial;
     overflow: hidden;
     color: #111111;
+    -webkit-app-region: drag;
+}
+
+.widget {
+    -webkit-app-region: no-drag;
 }
 
 header {
@@ -216,11 +225,18 @@ highlight {
     font-weight: bold;
 }
 
-#chat {
+.chat {
     color: #FFF;
     position: absolute;
     right: 5px;
     top: 206px;
+    font-size: 12px;
+    overflow: hidden;
+}
+
+#chat {
+    color: #FFF;
+    position: relative;
     max-height: 198px;
     width: 267px;
     font-size: 12px;
@@ -229,7 +245,7 @@ highlight {
     border: 3px solid #e7196e;
     z-index: 10;
     transition: all 200ms ease-out;
-}
+ }
 
 #chat .line-container {
     background: #222;

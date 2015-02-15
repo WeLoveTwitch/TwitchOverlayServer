@@ -58,6 +58,10 @@ TwitchOverlay.controller('OverlayController', ['$scope', '$rootScope', function 
         });
     }
 
+    $scope.dragOptions = {
+        container: 'body'
+    };
+
     $scope.showDevTools = function() {
         win.showDevTools();
     };
