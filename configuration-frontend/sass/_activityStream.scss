@@ -17,5 +17,8 @@
     &:nth-child(2n) {
       background-color: #dedede;
     }
+    &.new {
+      background-color: #fffdc3
+    }
   }
 }
