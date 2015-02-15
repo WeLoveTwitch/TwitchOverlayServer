@@ -1,6 +1,6 @@
 <div ng-controller="ActivityStreamController">
     <ul>
-        <li ng-repeat="follower in followers" ng-class="{new: checkNew(follower.name)}">
+        <li ng-repeat="follower in followers" ng-class="{new: checkNew(follower)}">
             <div>
                 <strong>{{follower.name}}</strong> is now following you!
             </div>

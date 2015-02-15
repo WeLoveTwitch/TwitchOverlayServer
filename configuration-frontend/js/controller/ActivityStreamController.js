@@ -1,42 +1,10 @@
-TwitchOverlay.controller('ActivityStreamController', ['$scope', 'TwitchOverlayServer', 'Tick', function ($scope, TwitchOverlayServer, Tick) {
+TwitchOverlay.controller('ActivityStreamController', ['$scope', 'Followers', function ($scope, Followers) {
 
-    $scope.followers = [];
+    $scope.followers = Followers.get();
 
-    // @TODO: refactor this into a service
-    var knownFollowers = [];
-    var newFollowers = [];
-
-    var initialized = false;
-
-    function loadFollowers() {
-        TwitchOverlayServer.getFollowers(function (followers) {
-            checkForNew(followers);
-            $scope.followers = followers;
-        });
-    }
-
-    function checkForNew(followers) {
-        if(!initialized) {
-            initialized = true;
-            followers.forEach(function (follower) {
-                knownFollowers.push(follower.name);
-            });
-            return;
-        }
-        followers.forEach(function (follower) {
-            if(knownFollowers.indexOf(follower.name) !== -1) {
-                return;
-            }
-            newFollowers.push(follower.name);
-        });
-    }
-
-    $scope.checkNew = function(name) {
-        return newFollowers.indexOf(name) > -1;
+    $scope.checkNew = function(follower) {
+        var now = new Date().getTime();
+        return follower.addedToDatabase + 1000 * 60 * 10 > now;
     };
-
-    Tick.register(function () {
-        loadFollowers();
-    });
 
 }]);
