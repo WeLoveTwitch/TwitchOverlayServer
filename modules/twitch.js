@@ -61,6 +61,9 @@ proto._getFollowerCount = function(cb) {
         limit: 1,
         direction: 'ASC'
     }, function(err, follower) {
+        if(err) {
+            return;
+        }
         that._totalFollows = follower._total;
         cb(null, follower._total)
     });
