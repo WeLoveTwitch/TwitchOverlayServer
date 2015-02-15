@@ -6,10 +6,23 @@ TwitchOverlay.directive('message', ['$rootScope', function($rootScope) {
         },
         link: function($scope, elem, attrs) {
 
+            var emotes = $rootScope.emotes.sort(function(a, b) {
+                // a.regex.length - b.regex.length
+                if(a.regex.length > b.regex.length) {
+                    return -1;
+                }
+                if(a.regex.length < b.regex.length) {
+                    return 1;
+                }
+                return 0;
+            });
+
+            console.log(emotes);
+
             var message = sanitize($scope.messageData, {
                 allowedTags: []
             });
-            $rootScope.emotes.forEach(function(emote) {
+            emotes.forEach(function(emote) {
                 var regex = new RegExp(emote.regex);
                 message = message.replace(regex, '<img src="' + emote.url + '">');
             });
