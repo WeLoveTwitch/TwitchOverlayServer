@@ -11,20 +11,24 @@ TwitchOverlay.service('Tick', ['$rootScope', function($rootScope) {
     })();
 
     function tick() {
-        funcs = funcs.filter(function(cb) {
-            cb();
-            return cb.__callOnce__ !== true;
+        funcs = funcs.filter(function(objs) {
+            objs.cb();
+            return objs.once !== true;
         });
     }
 
     return {
         register: function(cb) {
-            funcs.push(cb);
-            cb();
+            funcs.push({
+				cb: cb
+			});
+			cb();
         },
         registerOnce: function(cb) {
-            cb.__callOnce__ = true;
-            this.register(cb);
+            funcs.push({
+				cb: cb,
+				once: true
+			});
         }
     }
 }]);

@@ -21,7 +21,10 @@ TwitchOverlay.controller('OverlayController', ['$scope', '$rootScope', 'Socket',
     });
 
     $scope.connect = function() {
-        Socket.connect($scope.remote.host, $scope.remote.port);
+        Socket.connect($scope.remote.host, $scope.remote.port, function() {
+			$scope.loaded = true;
+			$scope.showConnectionWindow = false;
+		});
     };
 
     if(!Socket.isConnected()) {

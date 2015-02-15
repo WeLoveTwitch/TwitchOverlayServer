@@ -13,8 +13,6 @@
   "devDependencies": {
   },
   "window": {
-    "toolbar": false,
-    "frame": false,
     "title": "TwitchOverlay Frontend",
     "width": 1280,
     "height": 720,
