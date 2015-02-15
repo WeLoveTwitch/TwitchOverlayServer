@@ -105,14 +105,15 @@ proto._isSpam = function(from, message) {
 
 proto.say = function (text) {
     this._client.say(this._channel, text);
-    if(this._isSpam(secrets.bot.nick, text)) {
+    var nick = secrets.bot.nick.toLowerCase();
+    if(this._isSpam(nick, text)) {
         return false;
     }
-    this._addToAllLines(secrets.bot.nick, text);
+    this._addToAllLines(nick, text);
     this._addLine({
         message: text,
-        user: secrets.bot.nick,
-        nick: secrets.bot.nick
+        user: nick,
+        nick: nick
     });
 };
 
