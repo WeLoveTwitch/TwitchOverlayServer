@@ -6,12 +6,13 @@ TwitchOverlay.service('Socket', ['$rootScope', 'Tick', function ($rootScope, Tic
 
     function SocketEvent(event, cb) {
         function checkForSocket(cb) {
-            Tick.registerOnce(function() {
+            // @TODO: Use tick once instead
+            setTimeout(function() {
                 if(!socketConnected) {
                     return checkForSocket(cb);
                 }
                 cb();
-            });
+            }, 500);
         }
 
         checkForSocket(function() {
