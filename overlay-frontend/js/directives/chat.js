@@ -4,6 +4,7 @@ TwitchOverlay.directive('chat', [function() {
         scope: {
             chatData: '='
         },
+        replace: true,
         templateUrl: 'templates/directives/chat.html',
         link: function($scope, elem, attrs) {
 
@@ -23,12 +24,12 @@ TwitchOverlay.directive('chat', [function() {
             };
 
             window.setInterval(function() {
-                var markup = $(elem).find('.line-container');
-                var container = $(elem).find('#chat');
+                var markup = elem.find('.line-container');
+
                 if (markup.height() < _maxHeight) {
-                    container.height(markup.height() + 6);
+                    elem.height(markup.height() + 6);
                 } else {
-                    container.height(_maxHeight);
+                    elem.height(_maxHeight);
                 }
             }, 100);
         }
