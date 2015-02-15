@@ -17,8 +17,6 @@ TwitchOverlay.directive('message', ['$rootScope', function($rootScope) {
                 return 0;
             });
 
-            console.log(emotes);
-
             var message = sanitize($scope.messageData, {
                 allowedTags: []
             });
