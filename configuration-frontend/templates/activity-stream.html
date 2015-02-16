@@ -2,7 +2,9 @@
     <ul>
         <li ng-repeat="follower in followers" ng-class="{new: checkNew(follower)}">
             <div>
-                <strong>{{follower.name}}</strong> is now following you!
+                <strong>
+                    <a href="https://twitch.tv/{{ follower.name }}/profile" external>{{follower.name}}</a>
+                </strong> is now following you!
             </div>
             <div>
                 <small>
