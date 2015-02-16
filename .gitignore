@@ -1,7 +1,7 @@
 /bower_components
 /config/secrets.js
-/configuration-frontend/css
 /data
+/frontend/css
 /node_modules
 index.html
 npm-debug.log
