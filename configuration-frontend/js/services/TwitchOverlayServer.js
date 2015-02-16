@@ -27,7 +27,11 @@ TwitchOverlay.service('TwitchOverlayServer', ['$rootScope', function($rootScope)
             return server.getConfig(name);
         },
         getFollowers: function(cb) {
-            server.getModule('twitch').getFollowers(cb);
+            try {
+                server.getModule('twitch').getFollowers(cb);
+            } catch (error) {
+                console.log(error.message);
+            }
         }
     };
 }]);
