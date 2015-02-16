@@ -1,0 +1,79 @@
+.activity-stream {
+  width: 300px;
+  background: #eeeeee;
+  position: absolute;
+  right: 0;
+  top: 50px;
+  bottom: 0; }
+  .activity-stream ul, .activity-stream li {
+    margin: 0;
+    padding: 0;
+    list-style: none; }
+  .activity-stream li {
+    padding: 10px; }
+    .activity-stream li:nth-child(2n) {
+      background-color: #dedede; }
+    .activity-stream li.new {
+      background-color: #fffdc3; }
+
+body {
+  background-color: #333;
+  overflow: hidden; }
+
+.content {
+  position: absolute;
+  right: 320px;
+  left: 20px;
+  top: 70px; }
+
+* {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
+
+.bold {
+  font-weight: bold; }
+
+.header {
+  height: 50px;
+  padding: 5px;
+  background: #222222;
+  color: #ffffff;
+  position: relative;
+  -webkit-app-region: drag; }
+  .header .navigation {
+    position: absolute;
+    left: 0;
+    height: 50px;
+    width: 200px;
+    text-align: left;
+    font-size: 18px;
+    padding-top: 2px;
+    padding-left: 5px; }
+  .header .logo {
+    position: absolute;
+    font-size: 18px;
+    left: 50%;
+    width: 200px;
+    margin-left: -100px;
+    height: 50px;
+    text-align: center;
+    padding-top: 7px; }
+  .header .window-actions {
+    position: absolute;
+    padding-top: 2px;
+    right: 0;
+    width: 200px;
+    height: 50px;
+    text-align: right; }
+
+.header .btn, .header .btn:hover, .header .btn:focus {
+  background: #222;
+  outline: none;
+  -webkit-app-region: no-drag; }
+
+.header .btn:hover {
+  color: #999; }
