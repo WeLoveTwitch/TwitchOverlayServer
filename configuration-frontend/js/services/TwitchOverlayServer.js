@@ -31,6 +31,9 @@ TwitchOverlay.service('TwitchOverlayServer', ['$rootScope', function($rootScope)
                 if(err) return;
                 cb(data);
             });
+        },
+        getServer: function() {
+            return server;
         }
     };
 }]);
