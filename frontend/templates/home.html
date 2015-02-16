@@ -19,9 +19,6 @@
                 Server
             </div>
             <div class="panel-body" ng-controller="HomeController">
-                <button class="btn" ng-click="openOverlay()" ng-hide="win">Open Overlay</button>
-                <button class="btn" ng-click="closeOverlay()" ng-hide="!win">Close Overlay</button>
-                <hr>
                 <button class="btn" ng-click="server.start()" ng-hide="server.isRunning()">Start TwitchOverlayServer</button>
                 <span ng-show="server.isRunning()">
                     TwitchOverlayServer listening on <span class="label label-default">{{ip}}:{{config.port}}</span>
