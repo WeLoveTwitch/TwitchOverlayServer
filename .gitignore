@@ -1,8 +1,7 @@
-config/secrets.js
-node_modules
-.idea
-bower_components
+/bower_components
+/config/secrets.js
+/data
+/frontend/css
+/node_modules
 index.html
-frontend/css
 npm-debug.log
-data/*
