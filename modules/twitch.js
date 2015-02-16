@@ -145,11 +145,11 @@ proto._getAllFollowersFromApi = function(callback) {
 
 proto.getFollowers = function(cb) {
     if(!this._db)
-        throw new Error("database not ready");
+        return cb(new Error("database not ready"), null);
 
     this._db.find({}).sort({ addedToDatabase: -1}).exec(function(err, followers) {
         if(err) return false;
-        cb(followers)
+        cb(null, followers)
     });
 };
 
