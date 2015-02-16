@@ -1,7 +1,7 @@
 TwitchOverlay.directive('header', ['TwitchOverlayServer', function(TwitchOverlayServer) {
     return {
         restrict: 'E',
-        templateUrl: 'configuration-frontend/templates/directives/header.html',
+        templateUrl: 'frontend/templates/directives/header.html',
         link: function($scope, element) {
             var gui = require('nw.gui');
             var win = gui.Window.get();

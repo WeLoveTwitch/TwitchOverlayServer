@@ -9,7 +9,7 @@ TwitchOverlay.config(['$stateProvider', '$urlRouterProvider', function ($statePr
     $stateProvider
         .state('home', {
             url: '/home',
-            templateUrl: 'configuration-frontend/templates/home.html',
+            templateUrl: 'frontend/templates/home.html',
             controller: 'HomeController'
         })
 }]);
