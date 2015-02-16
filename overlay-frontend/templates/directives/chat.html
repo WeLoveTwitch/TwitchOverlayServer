@@ -1,9 +1,0 @@
-<div id="chat" ng-show="showChatFrame()">
-    <div class="line-container">
-        <div class="line" ng-repeat="line in chatData" ng-show="showLine(line.ts)">
-            <span class="time">{{line.ts | date:'HH:mm'}}</span>
-            <span class="nick">{{line.nick}}</span>
-            <message message-data="line.message"></message>
-        </div>
-    </div>
-</div>
