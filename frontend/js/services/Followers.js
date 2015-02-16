@@ -11,8 +11,10 @@ TwitchOverlay.service('Followers', ['Tick', 'TwitchOverlayServer', function (Tic
         });
     }
 
-    Tick.register(function () {
-        loadFollowers();
+    loadFollowers();
+
+    TwitchOverlayServer.on('twitch', 'newFollower', function(follower) {
+        followers.unshift(follower);
     });
 
     return {

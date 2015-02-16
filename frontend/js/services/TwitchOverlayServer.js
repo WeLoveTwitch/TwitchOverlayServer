@@ -4,6 +4,20 @@ TwitchOverlay.service('TwitchOverlayServer', ['$rootScope', function($rootScope)
 
     var server = null;
 
+    // add an event listener and call apply after event was triggered
+    function on(moduleName, event, cb) {
+        var module = server.getModule(moduleName);
+        if(!module) {
+            throw new Error('trying to an event listener to the unknown module: ' + module);
+        }
+        module.on(event, function() {
+            cb.apply(this, arguments);
+            if(!$rootScope.$$phase) {
+                $rootScope.$apply();
+            }
+        });
+    }
+
     $rootScope.config = config;
 
     return {
@@ -34,6 +48,9 @@ TwitchOverlay.service('TwitchOverlayServer', ['$rootScope', function($rootScope)
         },
         getServer: function() {
             return server;
+        },
+        on: function(module, event, cb) {
+            return on(module, event, cb);
         }
     };
 }]);

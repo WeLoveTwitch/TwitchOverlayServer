@@ -1,8 +1,12 @@
 var TwitchClient = require('./twitch-api');
 var account = require('../config/secrets').api;
 var queue = require('queue-async');
+var EventEmitter = require('events').EventEmitter;
+var inherits = require('util').inherits;
 
 function Twitch(db) {
+    EventEmitter.apply(this);
+
     this._client = new TwitchClient(account);
     this._db = null;
     this._emotes = null;
@@ -22,6 +26,8 @@ function Twitch(db) {
     });
 
 }
+
+inherits(Twitch, EventEmitter);
 
 var proto = Twitch.prototype;
 
@@ -46,7 +52,6 @@ proto.get = function (cb) {
 };
 
 proto._getEmoticonsFromApi = function(cb) {
-    console.log('test');
     this._client.emoticons({channel: account.username }, function(err, emotes) {
         if(err) return;
         cb(emotes.emoticons);
@@ -79,6 +84,7 @@ proto._saveFollowers = function (followers, callback) {
             if(!alreadyExists) {
                 user.addedToDatabase = new Date().getTime();
                 that._db.insert(user);
+                that.emit('newFollower', user);
             }
             // @TODO; remove users that do no longer follow this channel
             if(i === followers.length - 1) {
