@@ -1,5 +1,6 @@
 var TwitchChat = require('./twitch-chat');
 var Twitch = require('./twitch');
+var ActivityStream = require('./activity-stream');
 var Database = require('./database');
 var io = require('socket.io')();
 var ip = require('ip');
@@ -9,7 +10,10 @@ function TwitchOverlayServer(config) {
     var that = this;
 
     this._bot = new TwitchChat();
-    this._twitch = new Twitch(new Database('twitch'));
+    
+    this._activityStream = new ActivityStream(new Database('activities'));
+    this._twitch = new Twitch(new Database('twitch'), this._activityStream);
+    
     var db = new Database('config');
     this._db = null;
 
