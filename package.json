@@ -12,6 +12,8 @@
   "dependencies": {
     "express": "^4.11.1",
     "gulp": "^3.8.11",
+    "gulp-rimraf": "^0.1.1",
+    "gulp-run-sequence": "^0.3.2",
     "ip": "^0.3.2",
     "irc": "^0.3.9",
     "lodash": "^3.2.0",
@@ -28,8 +30,6 @@
     "run-sequence": "^1.0.2"
   },
   "window": {
-    "toolbar": false,
-    "frame": false,
     "width": 1024,
     "height": 768,
     "min_width": 1024,
