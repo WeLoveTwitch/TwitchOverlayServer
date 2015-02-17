@@ -21,7 +21,7 @@ function TwitchOverlayServer(config) {
         that._sockets.push(socket);
         that._tick();
 
-        that._twitch.getEmotes(function(emotes) {
+        that._twitch.getEmotes(function (emotes) {
             socket.emit('emotes', emotes);
         });
     });
@@ -60,7 +60,7 @@ proto._tick = function () {
                 botStore: that._bot.getStore()
             };
 
-            for(var key in that._data) {
+            for (var key in that._data) {
                 updateData[key] = that._data[key];
             }
 
@@ -74,7 +74,7 @@ proto._socketConnected = function (socket) {
 };
 
 proto.destroy = function () {
-    this._socket.engine.close()
+    this._socket.close();
 };
 
 proto.setConfig = function (name, payload) {
@@ -96,7 +96,7 @@ proto.getConfig = function (name) {
 
 proto.getIp = ip.address;
 
-proto.getModule = function(module) {
+proto.getModule = function (module) {
     return this['_' + module];
 };
 
