@@ -41,6 +41,6 @@ gulp.task('inject', function () {
 });
 
 gulp.task('watch', function () {
-    gulp.start(['sass'])
+    gulp.start(['sass']);
     gulp.watch(paths.sass, ['sass']);
 });
