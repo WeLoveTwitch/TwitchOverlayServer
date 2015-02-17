@@ -83,18 +83,24 @@ proto._saveFollowers = function (followers, callback) {
         that._db.find({_id: user._id}, function(err, knowFollowers) {
             var alreadyExists = knowFollowers.length > 0;
             if(!alreadyExists) {
-                user.addedToDatabase = new Date().getTime();
-                that._db.insert(user, function() {
-                    that.emit('newFollower', user);
-                    that._activityStream.add('follower', user);
-                });
+                that._insertUser(user);
             }
+
             // @TODO; remove users that do no longer follow this channel
             if(i === followers.length - 1) {
                 callback();
             }
         });
     });
+};
+
+proto._insertUser = function(user) {
+    var that = this;
+    user.addedToDatabase = new Date().getTime();
+    this._db.insert(user, function() {
+        that.emit('newFollower', user);
+    });
+    this._activityStream.add('follower', user);
 };
 
 proto._getLatestFollower = function(cb) {
