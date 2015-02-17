@@ -32,7 +32,6 @@ gulp.task('sass', function (done) {
         .on('end', done);
 });
 
-
 gulp.task('inject', function () {
     var target = gulp.src('./index-template.html');
     var sources = gulp.src(paths.jsLibs.concat(paths.js, paths.cssLibs, './frontend/css/*.css'), {read: false});
@@ -42,5 +41,6 @@ gulp.task('inject', function () {
 });
 
 gulp.task('watch', function () {
+    gulp.start(['sass'])
     gulp.watch(paths.sass, ['sass']);
 });
