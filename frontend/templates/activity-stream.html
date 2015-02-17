@@ -1,16 +1,17 @@
-<div ng-controller="ActivityStreamController">
+<aside ng-controller="ActivityStreamController">
+    <h1>Activity Stream</h1>
     <ul>
-        <li ng-repeat="follower in followers" ng-class="{new: checkNew(follower)}">
-            <div>
-                <strong>
-                    <a href="https://twitch.tv/{{ follower.name }}/profile" external>{{follower.name}}</a>
-                </strong> is now following you!
-            </div>
-            <div>
-                <small>
-                    {{follower.addedToDatabase | date:'dd.MM.yy HH:mm'}}
-                </small>
+        <li ng-repeat="follower in followers" class="item follower">
+            <div class="inner">
+                <div>
+                    <a href="https://twitch.tv/{{ follower.name }}/profile" external>{{follower.name}}</a> is now following you!
+                </div>
+                <div>
+                    <small>
+                        {{follower.addedToDatabase | date:'dd.MM.yy HH:mm'}}
+                    </small>
+                </div>
             </div>
         </li>
     </ul>
-</div>
+</aside>

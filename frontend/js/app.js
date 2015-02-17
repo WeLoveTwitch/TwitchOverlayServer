@@ -1,4 +1,4 @@
-var TwitchOverlay = angular.module('TwitchOverlay', ['ui.router']);
+var TwitchOverlay = angular.module('TwitchOverlay', ['ui.router', 'ngAnimate']);
 
 TwitchOverlay.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
 
