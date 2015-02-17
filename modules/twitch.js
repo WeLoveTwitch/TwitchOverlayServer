@@ -83,8 +83,9 @@ proto._saveFollowers = function (followers, callback) {
             var alreadyExists = knowFollowers.length > 0;
             if(!alreadyExists) {
                 user.addedToDatabase = new Date().getTime();
-                that._db.insert(user);
-                that.emit('newFollower', user);
+                that._db.insert(user, function() {
+                    that.emit('newFollower', user);
+                });
             }
             // @TODO; remove users that do no longer follow this channel
             if(i === followers.length - 1) {
