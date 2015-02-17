@@ -4,13 +4,14 @@ var queue = require('queue-async');
 var EventEmitter = require('events').EventEmitter;
 var inherits = require('util').inherits;
 
-function Twitch(db) {
+function Twitch(db, activityStream) {
     EventEmitter.apply(this);
 
     this._client = new TwitchClient(account);
     this._db = null;
     this._emotes = null;
-
+    this._activityStream = activityStream;
+    
     var that = this;
 
     db.ready(function(_db) {
@@ -85,6 +86,7 @@ proto._saveFollowers = function (followers, callback) {
                 user.addedToDatabase = new Date().getTime();
                 that._db.insert(user, function() {
                     that.emit('newFollower', user);
+                    that._activityStream.add('follower', user);
                 });
             }
             // @TODO; remove users that do no longer follow this channel
