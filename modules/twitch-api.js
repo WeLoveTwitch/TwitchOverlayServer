@@ -72,7 +72,6 @@ proto.users = function retrieveUserInformation(params, callback) {
 
 proto.emoticons = function retrieveEmoticons(params, callback) {
     var url = twitch_url + '/chat/' + params.channel + '/emoticons';
-    console.log(url);
     return this._retrieveResource(url, callback);
 };
 
