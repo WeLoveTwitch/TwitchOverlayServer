@@ -55,6 +55,10 @@ proto._getEmoticonsFromApi = function(cb) {
     });
 };
 
+proto.getFollowerCount = function() {
+    return this._totalFollows;
+};
+
 proto._getFollowerCount = function(cb) {
     var that = this;
     this._client.follows({
@@ -95,6 +99,8 @@ proto._insertUser = function(user) {
     user.addedToDatabase = new Date().getTime();
     this._db.insert(user, function() {
         that.emit('newFollower', user);
+        that._totalFollows++;
+        that.emit('newFollowerCount', that._totalFollows);
     });
     this._activityStream.add('follower', user);
 };

@@ -5,28 +5,44 @@ var Database = require('./database');
 var io = require('socket.io')();
 var ip = require('ip');
 
+// components
+var FollowerAlert = require('./components/follower-alert');
+var NewestFollower = require('./components/newest-follower');
+var Followers = require('./components/followers');
+
 function TwitchOverlayServer(config) {
 
     var that = this;
+
+    this._components = [];
 
     this._bot = new TwitchChat();
     this._db = new Database();
     this._activityStream = new ActivityStream(this._db);
     this._twitch = new Twitch(this._db, this._activityStream);
-
-    var db = null;
-    this._db.getCollection('config', function (instance) {
-        db = instance;
-    });
-    this._db = null;
     this._data = {};
     this._sockets = [];
+
+    this._components.push(new FollowerAlert(this._twitch));
+    this._components.push(new NewestFollower(this._twitch));
+    this._components.push(new Followers(this._twitch, this._data));
+
+    this._configCollection = null;
+    this._db.getCollection('config', function (instance) {
+        that._configCollection = instance;
+
+        that._configCollection.find({}, function(err, docs) {
+            docs.forEach(function(doc) {
+                that._data[doc._id] = doc.payload;
+            });
+        });
+    });
 
     io.on('connection', function (socket) {
         that._sockets.push(socket);
 
-        that._twitch.on('newFollower', function(user) {
-            socket.emit('followerAlert:update', user);
+        that._components.forEach(function(component) {
+            component.bindEvents(socket)
         });
 
         that._twitch.getEmotes(function (emotes) {
@@ -59,12 +75,16 @@ proto.destroy = function () {
 proto.setConfig = function (name, payload) {
     this._data[name] = payload;
     var that = this;
-    this._db.find({_id: name}, function (err, docs) {
-        console.log(arguments);
+
+    this._components.forEach(function(component) {
+        component.emit('configUpdate:' + name, payload);
+    });
+
+    this._configCollection.find({_id: name}, function (err, docs) {
         if (docs.length > 0) {
-            that._db.update({_id: name}, {_id: name, payload: payload});
+            that._configCollection.update({_id: name}, {_id: name, payload: payload});
         } else {
-            that._db.insert({_id: name, payload: payload});
+            that._configCollection.insert({_id: name, payload: payload});
         }
     });
 };
