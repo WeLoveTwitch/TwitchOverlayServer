@@ -8,18 +8,14 @@ function Twitch(db, activityStream) {
     EventEmitter.apply(this);
 
     this._client = new TwitchClient(account);
-    this._db = null;
+    this._db = db.getHandle();
     this._emotes = null;
     this._activityStream = activityStream;
     
     var that = this;
 
-    db.ready(function(_db) {
-        that._db = _db;
-
-        that._getAllFollowersFromApi(function(followers) {
-            that._saveFollowers(followers);
-        });
+    that._getAllFollowersFromApi(function(followers) {
+        that._saveFollowers(followers);
     });
 
     that._getEmoticonsFromApi(function(emotes) {
