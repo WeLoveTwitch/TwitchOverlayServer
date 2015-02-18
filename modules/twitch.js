@@ -5,6 +5,7 @@ var EventEmitter = require('events').EventEmitter;
 var inherits = require('util').inherits;
 
 function Twitch(db, activityStream) {
+
     EventEmitter.apply(this);
 
     var that = this;
@@ -33,11 +34,6 @@ inherits(Twitch, EventEmitter);
 var proto = Twitch.prototype;
 
 proto.get = function (cb) {
-
-    if(!this._db) {
-        return cb(null, {});
-    }
-
     var q = queue();
     q.defer(this._getFollowerCount.bind(this));
     q.defer(this._getLatestFollower.bind(this));
@@ -118,10 +114,7 @@ proto._getLatestFollowers = function(cb) {
         limit: limit,
         direction: 'ASC'
     }, function(err, follower) {
-
-        if(err) {
-            return false;
-        }
+        if(err) return false;
 
         that._saveFollowers(follower.follows, function() {
             cb(null, follower.follows);
@@ -165,12 +158,15 @@ proto.getFollowers = function(cb) {
     });
 };
 
+proto.getActivities = function(cb) {
+    this._activityStream.get(cb);
+};
+
 proto.getEmotes = function(cb) {
     if(!this._emotes) {
         return this._getEmoticonsFromApi(cb);
     }
     cb(this._emotes);
 };
-
 
 module.exports = Twitch;
