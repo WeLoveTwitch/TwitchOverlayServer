@@ -10,15 +10,16 @@ function TwitchOverlayServer(config) {
     var that = this;
 
     this._bot = new TwitchChat();
-    
-    this._activityStream = new ActivityStream(new Database('activities'));
-    this._twitch = new Twitch(new Database('twitch'), this._activityStream);
-    
-    var db = new Database('config').getHandle();
+    this._db = new Database();
+    this._activityStream = new ActivityStream(this._db);
+    this._twitch = new Twitch(this._db, this._activityStream);
+
+    var db = null;
+    this._db.getCollection('config', function (instance) {
+        db = instance;
+    });
     this._db = null;
-
     this._data = {};
-
     this._sockets = [];
 
     io.on('connection', function (socket) {
