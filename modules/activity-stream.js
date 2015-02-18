@@ -24,11 +24,19 @@ proto.add = function (type, payload) {
         type: type,
         payload: payload
     };
+
     this._db.insert(data, function () {
         this.emit('newActivity', data);
     }.bind(this));
 };
 
-// @TODO add method to retrieve last X activities
+proto.get = function (callback) {
+    this._db.find({}).sort({addedToDatabase: -1}).exec(
+        function (error, activities) {
+            if (error) return false;
+            callback(null, activities)
+        }
+    );
+};
 
 module.exports = ActivityStream;

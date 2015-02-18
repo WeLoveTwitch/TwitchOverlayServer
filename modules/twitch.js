@@ -165,6 +165,10 @@ proto.getFollowers = function(cb) {
     });
 };
 
+proto.getActivities = function(callback) {
+    this._activityStream.get(callback);
+};
+
 proto.getEmotes = function(cb) {
     if(!this._emotes) {
         return this._getEmoticonsFromApi(cb);

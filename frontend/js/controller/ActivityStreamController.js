@@ -1,10 +1,14 @@
-TwitchOverlay.controller('ActivityStreamController', ['$scope', 'Followers', function ($scope, Followers) {
+TwitchOverlay.controller('ActivityStreamController', ['$scope', 'Activities', function ($scope, Activities) {
 
-    $scope.followers = Followers.get();
+    $scope.$watch(function () {
+        return Activities.get();
+    }, function (activities) {
+        $scope.activities = activities;
+    });
 
-    $scope.checkNew = function(follower) {
+    $scope.checkNew = function(activity) {
         var now = new Date().getTime();
-        return follower.addedToDatabase + 1000 * 60 * 10 > now;
+        return activity.addedToDatabase + 1000 * 60 * 10 > now;
     };
 
 }]);
