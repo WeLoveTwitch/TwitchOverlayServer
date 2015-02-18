@@ -14,7 +14,7 @@ function Twitch(db, activityStream) {
     this._emotes = null;
     this._activityStream = activityStream;
 
-    db.getTable('twitch', function (instance) {
+    db.getCollection('twitch', function (instance) {
         that._db = instance;
     });
 

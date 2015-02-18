@@ -2,27 +2,27 @@ var Datastore = require('nedb');
 
 function Database() {
 
-    this._tables = [];
+    this._collections = [];
 
 }
 
 var proto = Database.prototype;
 
-proto.getTable = function (name, callback, autoload) {
-    if (name in this._tables && this._tables[name] != undefined) {
-        callback(this._tables[name]);
+proto.getCollection = function (name, callback, autoload) {
+    if (name in this._collections && this._collections[name] != undefined) {
+        callback(this._collections[name]);
     }
 
-    callback(this.createTable(name, autoload));
+    callback(this.createCollection(name, autoload));
 };
 
-proto.createTable = function (name, autoload) {
+proto.createCollection = function (name, autoload) {
     var table = new Datastore({
         filename: './data/' + name,
         autoload: autoload || true
     });
 
-    this._tables.push(table);
+    this._collections.push(table);
 
     return table;
 };

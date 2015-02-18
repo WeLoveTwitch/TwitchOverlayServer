@@ -15,7 +15,7 @@ function TwitchOverlayServer(config) {
     this._twitch = new Twitch(this._db, this._activityStream);
 
     var db = null;
-    this._db.getTable('config', function (instance) {
+    this._db.getCollection('config', function (instance) {
         db = instance;
     });
     this._db = null;

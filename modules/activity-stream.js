@@ -8,7 +8,7 @@ function ActivityStream(db) {
     var that = this;
     this._db = null;
 
-    db.getTable('activities', function (instance) {
+    db.getCollection('activities', function (instance) {
         that._db = instance;
     });
 
