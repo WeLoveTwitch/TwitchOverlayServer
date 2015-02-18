@@ -24,7 +24,8 @@ function TwitchOverlayServer(config) {
 
     io.on('connection', function (socket) {
         that._sockets.push(socket);
-        that._tick();
+
+        that._twitch.on('newFollower', socket.emit.bind(this, 'followerAlert:update'));
 
         that._twitch.getEmotes(function (emotes) {
             socket.emit('emotes', emotes);
@@ -42,26 +43,7 @@ function TwitchOverlayServer(config) {
 var proto = TwitchOverlayServer.prototype;
 
 proto._tick = function () {
-    var that = this;
-    this._twitch.get(function (data) {
-        that._sockets.forEach(function (socket) {
-            if (!that._socketConnected(socket)) {
-                return false;
-            }
-
-            var updateData = {
-                follower: data,
-                chat: that._bot.getLastLines(),
-                botStore: that._bot.getStore()
-            };
-
-            for (var key in that._data) {
-                updateData[key] = that._data[key];
-            }
-
-            socket.emit('update', updateData);
-        });
-    });
+    this._twitch.get(function() {});
 };
 
 proto._socketConnected = function (socket) {
