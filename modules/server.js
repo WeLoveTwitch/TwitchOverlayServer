@@ -25,7 +25,9 @@ function TwitchOverlayServer(config) {
     io.on('connection', function (socket) {
         that._sockets.push(socket);
 
-        that._twitch.on('newFollower', socket.emit.bind(this, 'followerAlert:update'));
+        that._twitch.on('newFollower', function(user) {
+            socket.emit('followerAlert:update', user);
+        });
 
         that._twitch.getEmotes(function (emotes) {
             socket.emit('emotes', emotes);
