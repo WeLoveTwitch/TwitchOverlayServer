@@ -1,6 +1,5 @@
 var TwitchClient = require('./twitch-api');
 var account = require('../config/secrets').api;
-var queue = require('queue-async');
 var EventEmitter = require('events').EventEmitter;
 var inherits = require('util').inherits;
 
@@ -33,19 +32,9 @@ inherits(Twitch, EventEmitter);
 
 var proto = Twitch.prototype;
 
-proto.get = function (cb) {
-    var q = queue();
-    q.defer(this._getFollowerCount.bind(this));
-    q.defer(this._getLatestFollower.bind(this));
-    q.defer(this._getLatestFollowers.bind(this));
-
-    q.awaitAll((function(err, data) {
-        cb({
-            followerCurrent: data[0],
-            followerNewest: data[1],
-            latestFollowers: data[2]
-        });
-    }).bind(this));
+proto.tick = function () {
+    this._getFollowerCount();
+    this._getLatestFollowers();
 };
 
 proto._getEmoticonsFromApi = function(cb) {
@@ -59,7 +48,7 @@ proto.getFollowerCount = function() {
     return this._totalFollows;
 };
 
-proto._getFollowerCount = function(cb) {
+proto._getFollowerCount = function() {
     var that = this;
     this._client.follows({
         channel: account.username,
@@ -71,12 +60,10 @@ proto._getFollowerCount = function(cb) {
             return;
         }
         that._totalFollows = follower._total;
-        cb(null, follower._total)
     });
 };
 
-proto._saveFollowers = function (followers, callback) {
-    callback = callback || function() {};
+proto._saveFollowers = function (followers) {
     var that = this;
     followers.forEach(function(follower, i) {
         var user = follower.user;
@@ -87,9 +74,6 @@ proto._saveFollowers = function (followers, callback) {
             }
 
             // @TODO; remove users that do no longer follow this channel
-            if(i === followers.length - 1) {
-                callback();
-            }
         });
     });
 };
@@ -122,9 +106,7 @@ proto._getLatestFollowers = function(cb) {
     }, function(err, follower) {
         if(err) return false;
 
-        that._saveFollowers(follower.follows, function() {
-            cb(null, follower.follows);
-        });
+        that._saveFollowers(follower.follows);
     });
 };
 

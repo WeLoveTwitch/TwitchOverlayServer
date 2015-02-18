@@ -61,7 +61,7 @@ function TwitchOverlayServer(config) {
 var proto = TwitchOverlayServer.prototype;
 
 proto._tick = function () {
-    this._twitch.get(function() {});
+    this._twitch.tick();
 };
 
 proto._socketConnected = function (socket) {
