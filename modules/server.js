@@ -14,7 +14,7 @@ function TwitchOverlayServer(config) {
     this._activityStream = new ActivityStream(new Database('activities'));
     this._twitch = new Twitch(new Database('twitch'), this._activityStream);
     
-    var db = new Database('config');
+    var db = new Database('config').getHandle();
     this._db = null;
 
     this._data = {};
@@ -31,16 +31,6 @@ function TwitchOverlayServer(config) {
     });
 
     this._socket = io.listen(config.port);
-
-    db.ready(function (_db) {
-        that._db = _db;
-
-        _db.find({}, function (err, configs) {
-            configs.forEach(function (config) {
-                that._data[config._id] = config.payload;
-            });
-        });
-    });
 
     (function loop() {
         setTimeout(loop, config.serverTick);

@@ -5,12 +5,7 @@ function ActivityStream(db) {
 
     EventEmitter.apply(this);
 
-    this._db = null;
-
-    db.ready(function (_db) {
-        this._db = _db;
-        this.emit('_dbReady');
-    }.bind(this));
+    this._db = db.getHandle();
 
 }
 
