@@ -7,12 +7,16 @@ var inherits = require('util').inherits;
 function Twitch(db, activityStream) {
     EventEmitter.apply(this);
 
+    var that = this;
+
     this._client = new TwitchClient(account);
-    this._db = db.getHandle();
+    this._db = null;
     this._emotes = null;
     this._activityStream = activityStream;
-    
-    var that = this;
+
+    db.getTable('twitch', function (instance) {
+        that._db = instance;
+    });
 
     that._getAllFollowersFromApi(function(followers) {
         that._saveFollowers(followers);
@@ -155,9 +159,6 @@ proto._getAllFollowersFromApi = function(callback) {
 };
 
 proto.getFollowers = function(cb) {
-    if(!this._db)
-        return cb(new Error("database not ready"), null);
-
     this._db.find({}).sort({ addedToDatabase: -1}).exec(function(err, followers) {
         if(err) return false;
         cb(null, followers)

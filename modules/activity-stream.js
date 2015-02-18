@@ -5,7 +5,12 @@ function ActivityStream(db) {
 
     EventEmitter.apply(this);
 
-    this._db = db.getHandle();
+    var that = this;
+    this._db = null;
+
+    db.getTable('activities', function (instance) {
+        that._db = instance;
+    });
 
 }
 
@@ -14,9 +19,6 @@ inherits(ActivityStream, EventEmitter);
 var proto = ActivityStream.prototype;
 
 proto.add = function (type, payload) {
-    if(!this._db) {
-        return this.on('_dbReady', this.add.bind(this, type, payload));
-    }
     var data = {
         addedToDatabase: new Date().getTime(),
         type: type,
