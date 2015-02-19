@@ -55,25 +55,24 @@ function TwitchChat() {
     });
 
     /*this._client.addListener('registered', function () {
-     console.log('registered:', arguments);
-     });
+        // console.log('registered:', arguments);
+    });
 
-     this._client.addListener('connect', function () {
-     console.log('connect:', arguments);
-     });
+    this._client.addListener('connect', function () {
+        // console.log('connect:', arguments);
+    });
 
-     this._client.addListener('data', function () {
-     console.log('data:', arguments);
-     });*/
+    this._client.addListener('data', function () {
+        // console.log('data:', arguments);
+    });
 
     this._client.addListener('close', function () {
-        console.log('close:', arguments);
+        // console.log('close:', arguments);
     });
 
     this._client.once('join', function () {
-        // do something on join
-    });
-
+        // console.log('join:', arguments);
+    });*/
 
 }
 
