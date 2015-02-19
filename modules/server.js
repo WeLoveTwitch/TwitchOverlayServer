@@ -9,6 +9,7 @@ var ip = require('ip');
 var FollowerAlert = require('./components/follower-alert');
 var NewestFollower = require('./components/newest-follower');
 var Followers = require('./components/followers');
+var Chat = require('./components/chat');
 
 function TwitchOverlayServer(config) {
 
@@ -16,9 +17,10 @@ function TwitchOverlayServer(config) {
 
     this._components = [];
 
-    this._bot = new TwitchChat();
     this._db = new Database();
     this._activityStream = new ActivityStream(this._db);
+
+    this._chat = new TwitchChat(this._activityStream);
     this._twitch = new Twitch(this._db, this._activityStream);
     this._data = {};
     this._sockets = [];
@@ -26,6 +28,7 @@ function TwitchOverlayServer(config) {
     this._components.push(new FollowerAlert(this._twitch));
     this._components.push(new NewestFollower(this._twitch));
     this._components.push(new Followers(this._twitch, this._data));
+    this._components.push(new Chat(this._chat));
 
     this._configCollection = null;
     this._db.getCollection('config', function (instance) {

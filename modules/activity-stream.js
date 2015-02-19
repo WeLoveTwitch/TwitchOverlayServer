@@ -21,7 +21,7 @@ var proto = ActivityStream.prototype;
 proto.add = function (type, payload, fake) {
     var data = {
         type: type,
-        fake: fake,
+        fake: fake || false,
         payload: payload,
         addedToDatabase: new Date().getTime()
     };

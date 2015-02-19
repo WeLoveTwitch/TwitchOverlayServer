@@ -1,178 +1,91 @@
-var Client = require('irc').Client;
 var secrets = require('../config/secrets');
+var irc = require('twitch-irc');
+var EventEmitter = require('events').EventEmitter;
+var inherits = require('util').inherits;
 
-function ChatLine(data) {
-    this.ts = new Date().getTime();
-    this.user = data.user;
-    this.nick = data.nick;
-    this.message = data.message || data.args[1];
-}
+// docs can be found here: https://github.com/Schmoopiie/twitch-irc/wiki
 
+function TwitchChat(activityStream) {
 
-function TwitchChat() {
+    EventEmitter.apply(this);
 
-    this._channel = '#' + secrets.bot.channel;
-    this._allLines = [];
-
-    this._trustedUsers = [
-        'xraymeta',
-        'kruemelterror1988',
-        'raynoir',
-        'tooxificati0n'
-    ];
-
-    this._client = new Client('irc.twitch.tv', secrets.bot.nick, {
-        channels: [this._channel],
-        autoRejoin: true,
-        sasl: true,
-        password: secrets.bot.password,
-        nick: secrets.bot.nick,
-        userName: secrets.bot.nick,
-        autoConnect: true
+    this._activityStream = activityStream;
+    this._client = new irc.client({
+        options: {
+            debug: true,
+            debugIgnore: [],
+            logging: false,
+            tc: 3
+        },
+        identity: {
+            username: secrets.bot.nick,
+            password: secrets.bot.password
+        },
+        channels: [secrets.bot.channel]
     });
-
-    this._lines = [];
-
-    this._store = {};
-
-    var that = this;
 
     this._client.connect();
 
-    this._client.addListener('message', function (from, to, message, data) {
-        if(that._isSpam(from, message)) return;
-
-        that._addToAllLines(from, message);
-        that._addLine(data);
-
-        if (that._isCommand(message)) {
-            that._parseCommand(from, message);
-        }
-    });
-
-    this._client.addListener('error', function (err) {
-        console.log('error:', err);
-    });
-
-    /*this._client.addListener('registered', function () {
-        // console.log('registered:', arguments);
-    });
-
-    this._client.addListener('connect', function () {
-        // console.log('connect:', arguments);
-    });
-
-    this._client.addListener('data', function () {
-        // console.log('data:', arguments);
-    });
-
-    this._client.addListener('close', function () {
-        // console.log('close:', arguments);
-    });
-
-    this._client.once('join', function () {
-        // console.log('join:', arguments);
-    });*/
-
+    this._bindEvents();
 }
+
+inherits(TwitchChat, EventEmitter);
 
 var proto = TwitchChat.prototype;
 
-proto._addLine = function (data) {
-    var newLine = new ChatLine(data);
-    this._lines.push(newLine);
-};
-
-proto._addToAllLines = function(from, message) {
-    this._allLines.push({from: from.toLowerCase(), message: message});
-    if(this._allLines > 50) {
-        this._allLines.shift();
-    }
-};
-
-proto._isSpam = function(from, message) {
-    from = from.toLowerCase();
-    var ts = new Date().getTime();
-    for (var i = 0; i < this._lines.length; i++) {
-        var line = this._lines[i];
-        if (Math.floor(line.ts / 1500) === Math.floor(ts / 1500) && line.user === from && line.message === message) {
-            return true;
-        }
-    }
-    return false;
-};
-
-proto.say = function (text) {
-    this._client.say(this._channel, text);
-    var nick = secrets.bot.nick.toLowerCase();
-    if(this._isSpam(nick, text)) {
-        return false;
-    }
-    this._addToAllLines(nick, text);
-    this._addLine({
-        message: text,
-        user: nick,
-        nick: nick
+proto._bindEvents = function() {
+    var that = this;
+    // retrieved a message in a channel
+    this._client.addListener('chat', function(channel, user, message) {
+        that.emit('message', {
+            channel: channel,
+            user: user,
+            message: message,
+            ts: new Date().getTime()
+        });
     });
-};
+    // Someone has subscribed to a channel
+    this._client.addListener('subscription', function(channel, username) {
+        that.emit('subscription', channel, username);
+        that._activityStream.add('subscriber', user);
+    });
+    // User has joined a channel
+    this._client.addListener('join', function(channel, username) {
+        that.emit('join', channel, username);
+    });
 
-proto._isCommand = function (message) {
-    return message.indexOf('!') === 0;
-};
+    // User has left a channel
+    this._client.addListener('part', function(channel, username) {
+        that.emit('part', channel, username);
+    });
 
-proto._parseCommand = function (from, message) {
-    var args = message.slice(1).split(' ');
-    var cmd = {
-        from: from,
-        action: args.shift(),
-        args: args
-    };
-    this._triggerAction(cmd);
-};
+    // Channel is now hosted by another broadcaster
+    this._client.addListener('hosted', function(channel, username, viewers) {
+        that.emit('hosted', channel, username, viewers);
+        that._activityStream.add('hosted', {
+            user: username,
+            viewers: viewers
+        });
+    });
 
-proto._greet = function (nick) {
-    this.say('Hey ' + nick + ', I\'m ' + secrets.bot.nick + '. I\'m awesome!');
-};
+    // Channel is now hosting another broadcaster.
+    this._client.addListener('hosting', function(channel, target, remains) {
+        // `remains` is the number of host commands left for this hour
+        that.emit('hosting', channel, target, remains);
+        that._activityStream.add('hosting', {
+            user: target,
+            remains: remains
+        });
+    });
 
-proto._schimmel = function (nick) {
-    if(!this._store.schimmelCount) {
-        this._store.schimmelCount = 0;
-    }
-    this._store.schimmelCount++;
-    this.say('Der Schimmel Counter steht jetzt auf ' + this._store.schimmelCount + ', ' + nick);
-};
-
-proto._resetSchimmel = function () {
-    this._store.schimmelCount = 0;
-};
-
-proto._triggerAction = function (cmd) {
-    if (cmd.action === 'greet') {
-        return this._greet(cmd.from);
-    }
-    if (cmd.action === 'schimmel' && this.isTrustedUser(cmd.from)) {
-        return this._schimmel(cmd.from);
-    }
-    if (cmd.action === 'resetSchimmel' && this.isTrustedUser(cmd.from)) {
-        return this._resetSchimmel();
-    }
-};
-
-proto.getLastLines = function (amount) {
-    amount = amount || 10;
-    if (amount > this._lines.length) {
-        return this._lines;
-    }
-    var lastIndex = this._lines.length;
-    return this._lines.slice(lastIndex - amount, lastIndex)
-};
-
-proto.isTrustedUser = function(username) {
-    return this._trustedUsers.indexOf(username) !== -1;
-};
-
-proto.getStore = function() {
-    return this._store;
+    // Channel ended the current hosting..
+    this._client.addListener('unhost', function(channel, remains) {
+        // `remains` is the number of host commands left for this hour
+        that.emit('unhost', channel, remains);
+        that._activityStream.add('unhost', {
+            remains: remains
+        });
+    });
 };
 
 module.exports = TwitchChat;

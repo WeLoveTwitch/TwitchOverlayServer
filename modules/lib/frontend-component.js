@@ -13,4 +13,8 @@ proto.bindEvents = function() {
     // just a stub
 };
 
+proto._getEventName = function(eventName) {
+    return this._name + ':' + eventName;
+};
+
 module.exports = FrontendComponent;

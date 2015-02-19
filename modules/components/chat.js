@@ -1,0 +1,22 @@
+var FrontendComponent = require('../lib/frontend-component');
+var inherits = require('util').inherits;
+
+function Chat(chat) {
+    FrontendComponent.apply(this);
+
+    this._name = 'chat';
+    this._chat = chat;
+}
+
+inherits(Chat, FrontendComponent);
+
+var proto = Chat.prototype;
+
+proto.bindEvents = function(socket) {
+    var that = this;
+    this._chat.on('message', function(message) {
+        socket.emit(that._getEventName('message'), message);
+    });
+};
+
+module.exports = Chat;

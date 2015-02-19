@@ -1,0 +1,10 @@
+<div class="inner">
+	<div>
+		<a href="https://twitch.tv/{{ activity.payload.name }}/profile" external>{{ activity.payload.name }}</a> has subscribed you!
+	</div>
+	<div>
+		<small>
+            {{ activity.addedToDatabase | date:'dd.MM.yy HH:mm' }}
+		</small>
+	</div>
+</div>

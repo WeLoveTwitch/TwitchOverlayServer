@@ -4,6 +4,7 @@ var inherits = require('util').inherits;
 function NewestFollower(twitch) {
     FrontendComponent.apply(this);
 
+    this._name = 'newestFollower';
     this._twitch = twitch;
 }
 
@@ -15,12 +16,12 @@ proto.bindEvents = function(socket) {
     var that = this;
 
     this._twitch.on('newFollower', function(newestFollower) {
-        socket.emit('newestFollower:update', newestFollower);
+        socket.emit(that._getEventName('update'), newestFollower);
     });
 
-    socket.on('newestFollower:update', function() {
+    socket.on(this._getEventName('update'), function() {
         that._twitch._getLatestFollower(function(err, newestFollower) {
-            socket.emit('newestFollower:update', newestFollower);
+            socket.emit(that._getEventName('update'), newestFollower);
         });
     });
 };
