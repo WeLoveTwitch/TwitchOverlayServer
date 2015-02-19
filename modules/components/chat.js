@@ -14,7 +14,7 @@ var proto = Chat.prototype;
 
 proto.bindEvents = function(socket) {
     var that = this;
-    this._chat.on('message', function(message) {
+    this.bindEvent('_chat', 'message', socket.id, function(message) {
         socket.emit(that._getEventName('message'), message);
     });
 };

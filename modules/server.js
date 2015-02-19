@@ -44,12 +44,23 @@ function TwitchOverlayServer(config) {
     io.on('connection', function (socket) {
         that._sockets.push(socket);
 
+        console.log('client connected');
+
         that._components.forEach(function(component) {
             component.bindEvents(socket)
         });
 
         that._twitch.getEmotes(function (emotes) {
             socket.emit('emotes', emotes);
+        });
+
+        socket.on('disconnect', function() {
+            that._sockets = that._sockets.filter(function(s) {
+                that._components.forEach(function(component) {
+                    component.unbindEvents(socket.id);
+                });
+                return s.id === socket;
+            });
         });
     });
 
