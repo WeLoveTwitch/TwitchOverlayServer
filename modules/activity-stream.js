@@ -18,11 +18,12 @@ inherits(ActivityStream, EventEmitter);
 
 var proto = ActivityStream.prototype;
 
-proto.add = function (type, payload) {
+proto.add = function (type, payload, fake) {
     var data = {
-        addedToDatabase: new Date().getTime(),
         type: type,
-        payload: payload
+        fake: fake,
+        payload: payload,
+        addedToDatabase: new Date().getTime()
     };
 
     this._db.insert(data, function () {
@@ -37,6 +38,12 @@ proto.get = function (callback) {
             callback(null, activities)
         }
     );
+};
+
+proto.cleanUpFollowers = function () {
+    this._db.remove({ fake: true }, { multi: true }, function(error, count) {
+        if(error) return false;
+    });
 };
 
 module.exports = ActivityStream;

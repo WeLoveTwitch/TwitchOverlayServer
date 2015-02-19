@@ -28,7 +28,6 @@ proto.bindEvents = function(socket) {
     });
 
     socket.on('followers:newFollowerTarget', function() {
-        console.log(that._serverData);
         socket.emit('followers:newFollowerTarget', that._serverData.followerTarget || 0);
     });
 };

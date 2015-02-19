@@ -63,22 +63,25 @@ proto._getFollowerCount = function() {
     });
 };
 
-proto._saveFollowers = function (followers) {
+proto._saveFollowers = function (followers, fake) {
+    fake = fake || false;
     var that = this;
     followers.forEach(function(follower, i) {
         var user = follower.user;
         that._db.find({_id: user._id}, function(err, knowFollowers) {
             var alreadyExists = knowFollowers.length > 0;
             if(!alreadyExists) {
-                that._insertUser(user);
+                that._insertUser(user, fake);
             }
 
-            // @TODO; remove users that do no longer follow this channel
+            if(i === followers.length - 1) {
+                // @TODO; remove users that do no longer follow this channel
+            }
         });
     });
 };
 
-proto._insertUser = function(user) {
+proto._insertUser = function(user, fake) {
     var that = this;
     user.addedToDatabase = new Date().getTime();
     this._db.insert(user, function() {
@@ -86,7 +89,7 @@ proto._insertUser = function(user) {
         that._totalFollows++;
         that.emit('newFollowerCount', that._totalFollows);
     });
-    this._activityStream.add('follower', user);
+    this._activityStream.add('follower', user, fake);
 };
 
 proto._getLatestFollower = function(cb) {
@@ -144,6 +147,13 @@ proto.getFollowers = function(cb) {
         if(err) return false;
         cb(null, followers)
     });
+};
+
+proto.cleanUpFollowers = function() {
+    this._db.remove({ fake: true }, { multi: true }, function(error, count) {
+        if(error) return false;
+    });
+    this._activityStream.cleanUpFollowers();
 };
 
 proto.getActivities = function(cb) {
