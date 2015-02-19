@@ -10,6 +10,7 @@ var FollowerAlert = require('./components/follower-alert');
 var NewestFollower = require('./components/newest-follower');
 var Followers = require('./components/followers');
 var Chat = require('./components/chat');
+var Logo = require('./components/logo');
 
 function TwitchOverlayServer(config) {
 
@@ -29,6 +30,7 @@ function TwitchOverlayServer(config) {
     this._components.push(new NewestFollower(this._twitch));
     this._components.push(new Followers(this._twitch, this._data));
     this._components.push(new Chat(this._chat));
+    this._components.push(new Logo());
 
     this._configCollection = null;
     this._db.getCollection('config', function (instance) {
@@ -111,6 +113,12 @@ proto.getIp = ip.address;
 
 proto.getModule = function (module) {
     return this['_' + module];
+};
+
+proto.enterEditMode = function () {
+    this._components.forEach(function(component) {
+        component.emit('enterEditMode');
+    });
 };
 
 module.exports = TwitchOverlayServer;

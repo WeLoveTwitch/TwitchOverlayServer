@@ -16,6 +16,8 @@ var proto = Followers.prototype;
 proto.bindEvents = function(socket) {
     var that = this;
 
+    this.bindGenericEvents(socket);
+
     this._twitch.on('newFollowerCount', function(count) {
         socket.emit(that._getEventName('countUpdate'), count);
     });

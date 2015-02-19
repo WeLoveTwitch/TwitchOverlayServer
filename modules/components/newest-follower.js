@@ -15,6 +15,8 @@ var proto = NewestFollower.prototype;
 proto.bindEvents = function(socket) {
     var that = this;
 
+    this.bindGenericEvents(socket);
+
     this._twitch.on('newFollower', function(newestFollower) {
         socket.emit(that._getEventName('update'), newestFollower);
     });

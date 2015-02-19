@@ -13,6 +13,7 @@ inherits(Chat, FrontendComponent);
 var proto = Chat.prototype;
 
 proto.bindEvents = function(socket) {
+    this.bindGenericEvents(socket);
     var that = this;
     this.bindEvent('_chat', 'message', socket.id, function(message) {
         socket.emit(that._getEventName('message'), message);

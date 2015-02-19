@@ -15,6 +15,8 @@ var proto = FollowerAlert.prototype;
 proto.bindEvents = function(socket) {
     var that = this;
 
+    this.bindGenericEvents(socket);
+
     this.bindEvent('_twitch', 'newFollower', socket.id, function(user) {
         socket.emit(that._getEventName('update'), user);
     });

@@ -60,6 +60,9 @@ TwitchOverlay.service('TwitchOverlayServer', ['$rootScope', function ($rootScope
         },
         on: function (module, event, callback) {
             return on(module, event, callback);
+        },
+        enterEditMode: function() {
+            server.enterEditMode();
         }
     };
 

@@ -10,4 +10,8 @@ TwitchOverlay.controller('ConfigurationController', ['$scope', 'TwitchOverlaySer
         TwitchOverlayServer.setConfig('subline', $scope.subline);
     };
 
+    $scope.enterEditMode = function() {
+        TwitchOverlayServer.enterEditMode();
+    };
+
 }]);
