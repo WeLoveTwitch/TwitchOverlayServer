@@ -51,14 +51,33 @@
       transition: none 2s;
       overflow: hidden;
     }
-    &.item.follower > div {
-      border-left: 6px solid #5fa2dd;
+    &.item {
       a {
         font-weight: 700;
       }
+      &.follower {
+        border-left: 6px solid #5fa2dd;
+      }
+      &.hosted {
+        border-left: 6px solid #c5a74a;
+      }
+      &.subscription {
+        border-left: 6px solid #7bc54a;
+      }
+      &.hosting {
+        border-left: 6px solid #c5a74a;
+      }
+      &.unhost {
+        border-left: 6px solid #c5a74a;
+      }
+      &.donation {
+        border-left: 6px solid #c54ac1;
+      }
+
     }
   }
 }
+
 @-webkit-keyframes add-item {
   0% {
     max-height: 0;

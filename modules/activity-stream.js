@@ -46,4 +46,21 @@ proto.cleanUpFollowers = function () {
     });
 };
 
+
+proto.check = function (type, data, success, fail) {
+    var success = success || function() {};
+    var fail = fail || function() {};
+    var query = {
+        type: type,
+        payload: data
+    };
+    this._db.count(query, function(error, count) {
+        if(error) return false;
+        if(count === 0) {
+            return success(count);
+        }
+        fail(count);
+    });
+};
+
 module.exports = ActivityStream;

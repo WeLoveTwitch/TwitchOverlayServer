@@ -48,6 +48,7 @@ proto._bindEvents = function() {
     this._client.addListener('subscription', function(channel, username) {
         that.emit('subscription', channel, username);
         that._activityStream.add('subscriber', user);
+
     });
     // User has joined a channel
     this._client.addListener('join', function(channel, username) {
@@ -72,10 +73,13 @@ proto._bindEvents = function() {
     this._client.addListener('hosting', function(channel, target, remains) {
         // `remains` is the number of host commands left for this hour
         that.emit('hosting', channel, target, remains);
-        that._activityStream.add('hosting', {
+        var data = {
             user: target,
             remains: remains
-        });
+        };
+        that._activityStream.check('hosting', data, function() {
+            that._activityStream.add('hosting', data);
+        }, function() { /* already exists */ });
     });
 
     // Channel ended the current hosting..
