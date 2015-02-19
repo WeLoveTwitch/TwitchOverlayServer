@@ -1,4 +1,4 @@
-TwitchOverlay.directive('header', ['TwitchOverlayServer', function(TwitchOverlayServer) {
+TwitchOverlay.directive('titleBar', ['TwitchOverlayServer', function(TwitchOverlayServer) {
     return {
         restrict: 'E',
         templateUrl: 'frontend/templates/directives/header.html',
