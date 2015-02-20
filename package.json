@@ -32,8 +32,8 @@
   "window": {
     "toolbar": false,
     "frame": false,
-    "width": 1024,
-    "height": 768,
+    "width": 1280,
+    "height": 720,
     "min_width": 1024,
     "min_height": 768
   }

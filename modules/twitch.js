@@ -10,13 +10,9 @@ function Twitch(db, activityStream) {
     var that = this;
 
     this._client = new TwitchClient(account);
-    this._db = null;
+    this._db = db.getCollection('twitch');
     this._emotes = null;
     this._activityStream = activityStream;
-
-    db.getCollection('twitch', function (instance) {
-        that._db = instance;
-    });
 
     that._getAllFollowersFromApi(function(followers) {
         that._saveFollowers(followers);

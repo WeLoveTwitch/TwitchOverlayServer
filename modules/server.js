@@ -4,42 +4,36 @@ var ActivityStream = require('./activity-stream');
 var Database = require('./database');
 var io = require('socket.io')();
 var ip = require('ip');
-
-// components
-var FollowerAlert = require('./components/follower-alert');
-var NewestFollower = require('./components/newest-follower');
-var Followers = require('./components/followers');
-var Chat = require('./components/chat');
-var Logo = require('./components/logo');
+var ComponentFactory = require('./lib/frontend-component-factory');
 
 function TwitchOverlayServer(config) {
 
     var that = this;
 
-    this._components = [];
-
+    this._data = {};
     this._db = new Database();
     this._activityStream = new ActivityStream(this._db);
 
     this._chat = new TwitchChat(this._activityStream);
     this._twitch = new Twitch(this._db, this._activityStream);
-    this._data = {};
+
+    this._componentFactory = new ComponentFactory(
+        this._db.getCollection('components'),
+        {
+            twitch: this._twitch,
+            chat: this._chat,
+            serverData: this._data
+        }
+    );
+
     this._sockets = [];
 
-    this._components.push(new FollowerAlert(this._twitch));
-    this._components.push(new NewestFollower(this._twitch));
-    this._components.push(new Followers(this._twitch, this._data));
-    this._components.push(new Chat(this._chat));
-    this._components.push(new Logo());
-
     this._configCollection = null;
-    this._db.getCollection('config', function (instance) {
-        that._configCollection = instance;
+    this._configCollection = this._db.getCollection('config');
 
-        that._configCollection.find({}, function(err, docs) {
-            docs.forEach(function(doc) {
-                that._data[doc._id] = doc.payload;
-            });
+    this._configCollection.find({}, function(err, docs) {
+        docs.forEach(function(doc) {
+            that._data[doc._id] = doc.payload;
         });
     });
 
@@ -115,10 +109,8 @@ proto.getModule = function (module) {
     return this['_' + module];
 };
 
-proto.enterEditMode = function () {
-    this._components.forEach(function(component) {
-        component.emit('enterEditMode');
-    });
+proto.getComponentFactory = function () {
+    return this._componentFactory;
 };
 
 module.exports = TwitchOverlayServer;

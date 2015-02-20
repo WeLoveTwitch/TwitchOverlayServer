@@ -3,8 +3,6 @@ var inherits = require('util').inherits;
 
 function NewestFollower(twitch) {
     FrontendComponent.apply(this);
-
-    this._name = 'newestFollower';
     this._twitch = twitch;
 }
 

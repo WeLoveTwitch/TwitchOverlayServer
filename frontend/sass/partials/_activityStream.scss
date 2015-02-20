@@ -55,22 +55,22 @@
                 font-weight: 700;
             }
             &.follower {
-                border-left: 6px solid #5fa2dd;
+                border-left: 6px solid $bluejeans-light;
             }
             &.hosted {
-                border-left: 6px solid #c5a74a;
+                border-left: 6px solid $sunflower-light;
             }
             &.subscription {
-                border-left: 6px solid #7bc54a;
+                border-left: 6px solid $grass-light;
             }
             &.hosting {
-                border-left: 6px solid #c5a74a;
+                border-left: 6px solid $sunflower-light;
             }
             &.unhost {
-                border-left: 6px solid #c5a74a;
+                border-left: 6px solid $sunflower-light;
             }
             &.donation {
-                border-left: 6px solid #c54ac1;
+                border-left: 6px solid $pinkrose-light;
             }
         }
     }

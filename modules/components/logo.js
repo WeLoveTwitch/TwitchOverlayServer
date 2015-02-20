@@ -3,8 +3,6 @@ var inherits = require('util').inherits;
 
 function Logo() {
     FrontendComponent.apply(this);
-
-    this._name = 'logo';
 }
 
 inherits(Logo, FrontendComponent);

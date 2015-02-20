@@ -7,35 +7,21 @@
         <!-- inject:css -->
         <!-- endinject -->
 
+        <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,900' rel='stylesheet' type='text/css'>
+
         <!-- inject:js -->
         <!-- endinject -->
     </head>
     <body ng-app="TwitchOverlay">
         <title-bar></title-bar>
         <div class="boxed">
-            <nav id="navigation-container">
-                <ul class="list-unstyled">
-                    <li class="heading">Navigation</li>
-                    <li class="active"><a href="#"><i class="fa fa-tachometer"></i>Dashboard</a></li>
-                    <li><a href="#"><i class="fa fa-heart"></i>About</a></li>
-                    <li><a href="#"><i class="fa fa-question"></i>Help</a></li>
-                    <li class="heading">Settings</li>
-                    <li><a href="#"><i class="fa fa-paint-brush"></i>Overlay Design</a></li>
-                    <li><a href="#"><i class="fa fa-cogs"></i>Chat Bot</a></li>
-                </ul>
-
-                <div id="created-by">
-                    <div class="created-text"></div>
-                    <h6>WeLoveTwitch</h6>
-                    <div class="heart"></div>
-                </div>
-            </nav>
+            <nav id="navigation-container" ng-include="'frontend/templates/navigation.html'"></nav>
             <main class="content-container">
                 <header class="view-header">
                     <a href="#" class="nav-toggle"><i class="fa fa-bars"></i></a>
-                    <h1>Dashboard</h1>
+                    <h1>{{getCurrentState('headline')}}</h1>
                 </header>
-                <div ui-view>
+                <div class="main-content" ui-view>
 
                 </div>
             </main>

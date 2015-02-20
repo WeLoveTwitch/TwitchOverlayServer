@@ -3,8 +3,6 @@ var inherits = require('util').inherits;
 
 function FollowerAlert(twitch) {
     FrontendComponent.apply(this);
-
-    this._name = 'followerAlert';
     this._twitch = twitch;
 }
 

@@ -7,13 +7,17 @@ var runSequence = require('gulp-run-sequence');
 var rimraf = require('gulp-rimraf');
 
 var paths = {
-    sass: ['./frontend/sass/**/*.scss'],
+    sass: [
+        './frontend/sass/**/*.scss'
+    ],
     cssLibs: [
         './bower_components/bootstrap/dist/css/bootstrap.css',
+        './bower_components/Bootflat/bootflat/css/bootflat.css',
         './bower_components/fontawesome/css/font-awesome.css'
     ],
     jsLibs: [
         './bower_components/jquery/dist/jquery.js',
+        './bower_components/bootstrap/dist/js/bootstrap.js',
         './bower_components/angular/angular.js',
         './bower_components/ui-router/release/angular-ui-router.min.js',
         './bower_components/angular-animate/angular-animate.min.js'

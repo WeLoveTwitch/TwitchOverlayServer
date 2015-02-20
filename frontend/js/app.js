@@ -4,18 +4,31 @@ TwitchOverlay.config(['$stateProvider', '$urlRouterProvider', function ($statePr
 
     'use strict';
 
-    $urlRouterProvider.otherwise('/home');
+    $urlRouterProvider.otherwise('/dashboard');
 
     $stateProvider
-        .state('home', {
-            url: '/home',
-            templateUrl: 'frontend/templates/home.html',
-            controller: 'HomeController'
+        .state('dashboard', {
+            headline: 'Dashboard',
+            url: '/dashboard',
+            templateUrl: 'frontend/templates/dashboard.html',
+            controller: 'DashboardController'
+        })
+        .state('design', {
+            headline: 'Design',
+            url: '/design',
+            templateUrl: 'frontend/templates/design.html',
+            controller: 'DesignController'
         })
 }]);
 
-TwitchOverlay.run(['$rootScope', 'TwitchOverlayServer', 'Tick', function ($rootScope, TwitchOverlayServer, Tick) {
+TwitchOverlay.run(['$rootScope', 'TwitchOverlayServer', 'Tick', '$state', function ($rootScope, TwitchOverlayServer, Tick, $state) {
     TwitchOverlayServer.start();
+
+
+    $rootScope.getCurrentState = function(key) {
+        if(!key) return $state.current;
+        return $state.current[key];
+    };
 
 
     var gui = require('nw.gui');

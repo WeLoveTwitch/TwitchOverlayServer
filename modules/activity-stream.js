@@ -2,16 +2,8 @@ var EventEmitter = require('events').EventEmitter;
 var inherits = require('util').inherits;
 
 function ActivityStream(db) {
-
     EventEmitter.apply(this);
-
-    var that = this;
-    this._db = null;
-
-    db.getCollection('activities', function (instance) {
-        that._db = instance;
-    });
-
+    this._db = db.getCollection('activities');
 }
 
 inherits(ActivityStream, EventEmitter);

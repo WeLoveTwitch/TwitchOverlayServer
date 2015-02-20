@@ -10,10 +10,10 @@ var proto = Database.prototype;
 
 proto.getCollection = function (name, callback, autoload) {
     if (name in this._collections && this._collections[name] != undefined) {
-        callback(this._collections[name]);
+        return this._collections[name];
     }
 
-    callback(this.createCollection(name, autoload));
+    return this.createCollection(name, autoload);
 };
 
 proto.createCollection = function (name, autoload) {

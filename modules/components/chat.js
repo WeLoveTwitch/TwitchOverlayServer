@@ -3,8 +3,6 @@ var inherits = require('util').inherits;
 
 function Chat(chat) {
     FrontendComponent.apply(this);
-
-    this._name = 'chat';
     this._chat = chat;
 }
 

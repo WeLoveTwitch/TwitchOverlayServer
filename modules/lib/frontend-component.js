@@ -4,6 +4,10 @@ var EventEmitter = require('events').EventEmitter;
 function FrontendComponent() {
     EventEmitter.apply(this);
     this._cachedEvents = {};
+    this.position = {
+        x: 0,
+        y: 0
+    }
 }
 
 inherits(FrontendComponent, EventEmitter);
@@ -51,6 +55,10 @@ proto.unbindEvents = function(socketId) {
 
 proto._getEventName = function(eventName) {
     return this._name + ':' + eventName;
+};
+
+proto.setName = function(name) {
+    this._name = name;
 };
 
 module.exports = FrontendComponent;

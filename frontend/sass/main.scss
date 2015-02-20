@@ -1,81 +1,99 @@
+@import '_colors';
 @import 'partials/_navigation';
 @import 'partials/_activityStream';
 @import 'partials/_viewHeader';
 
 html, body {
-    height: 100%;
+  height: 100%;
+  font-family: 'Lato', sans-serif;
 }
 
 body {
-    background: #333 url('../images/twitch-background.png') no-repeat bottom left;
-    overflow: hidden;
+  background: #333 url('../images/twitch-background.png') no-repeat bottom left;
+  overflow: hidden;
 }
 
 .content-container {
-    position: absolute;
-    left: 0;
-    width: 100%;
+  position: absolute;
+  left: 0;
+  width: 100%;
 
-    .view-header {
-        height: 50px;
-        border-bottom: 4px solid #4e3382;
-        background: #6441a5;
-        box-shadow: 0 0 6px #000;
+  .view-header {
+    height: 50px;
+    border-bottom: 4px solid $twitch-dark;
+    background: $twitch-light;
+    box-shadow: 0 0 6px $black;
+    h1 {
+      position: absolute;
+      left: 44px;
+      color: #FFF;
+      top: 11px;
+      margin: 0;
+      font-size: 20px;
     }
+  }
+
+  .main-content {
+    position: absolute;
+    right: 300px;
+    left: 0;
+    padding: 20px;
+  }
 }
 
 * {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
 }
 
 .bold {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .header {
+  height: 50px;
+  padding: 5px;
+  background: #222222;
+  color: #ffffff;
+  position: relative;
+  -webkit-app-region: drag;
+  .navigation {
+    position: absolute;
+    left: 0;
     height: 50px;
-    padding: 5px;
-    background: #222222;
-    color: #ffffff;
-    position: relative;
-    -webkit-app-region: drag;
-    .navigation {
-        position: absolute;
-        left: 0;
-        height: 50px;
-        width: 200px;
-        text-align: left;
-        font-size: 18px;
-        padding-top: 2px;
-        padding-left: 5px;
-    }
-    .logo {
-        position: absolute;
-        font-size: 18px;
-        left: 50%;
-        width: 200px;
-        margin-left: -100px;
-        height: 50px;
-        text-align: center;
-        padding-top: 7px;
-    }
-    .window-actions {
-        position: absolute;
-        padding-top: 2px;
-        right: 0;
-        width: 200px;
-        height: 50px;
-        text-align: right;
-    }
+    width: 200px;
+    text-align: left;
+    font-size: 18px;
+    padding-top: 2px;
+    padding-left: 5px;
+  }
+  .logo {
+    position: absolute;
+    font-size: 18px;
+    left: 50%;
+    width: 200px;
+    margin-left: -100px;
+    height: 50px;
+    text-align: center;
+    padding-top: 7px;
+  }
+  .window-actions {
+    position: absolute;
+    padding-top: 2px;
+    right: 0;
+    width: 200px;
+    height: 50px;
+    text-align: right;
+  }
 }
 
 .header .btn, .header .btn:hover, .header .btn:focus {
-    background: #222;
-    outline: none;
-    -webkit-app-region: no-drag;
+  background: #222;
+  outline: none;
+  border: none;
+  -webkit-app-region: no-drag;
 }
 
 .header .btn:hover {
-    color: #999;
+  color: #999;
 }
