@@ -75,4 +75,12 @@ proto.getAvailableComponents = function() {
     return this._listOfAvailableComponents;
 };
 
+proto.registerClient = function() {
+    // @TODO implement
+};
+
+proto.unregisterClient = function() {
+    // @TODO implement
+};
+
 module.exports = FrontendComponentFactory;

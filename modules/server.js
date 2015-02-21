@@ -42,9 +42,7 @@ function TwitchOverlayServer(config) {
 
         console.log('client connected');
 
-        that._components.forEach(function(component) {
-            component.bindEvents(socket)
-        });
+        that._componentFactory.registerClient(socket);
 
         that._twitch.getEmotes(function (emotes) {
             socket.emit('emotes', emotes);
@@ -52,9 +50,7 @@ function TwitchOverlayServer(config) {
 
         socket.on('disconnect', function() {
             that._sockets = that._sockets.filter(function(s) {
-                that._components.forEach(function(component) {
-                    component.unbindEvents(socket.id);
-                });
+                that._componentFactory.unregisterClient(socket);
                 return s.id === socket;
             });
         });
