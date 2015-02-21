@@ -14,19 +14,19 @@
         border-bottom: 1px solid #e0e0e0;
     }
 
-    ul {
+    ul.activity-stream-list {
         top: 46px;
         bottom: 0;
+        overflow-y: hidden;
         position: absolute;
-    }
-
-    ul, li {
-        margin: 0;
         padding: 0;
         list-style: none;
     }
 
-    li {
+    ul.activity-stream-list > li {
+        margin: 0;
+        padding: 0;
+        list-style: none;
         border-bottom: 1px solid #fcfcfc;
         &:first-child {
             border-top: 1px solid #fcfcfc;

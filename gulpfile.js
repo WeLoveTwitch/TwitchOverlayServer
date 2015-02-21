@@ -32,7 +32,7 @@ var includes = {
         config.bowerDir + '/angular/angular.js',
         config.bowerDir + '/ui-router/release/angular-ui-router.min.js',
         config.bowerDir + '/angular-animate/angular-animate.min.js',
-        config.bowerDir + '/jquery-nicescroll/jquery.nicescroll.min.js'
+        config.bowerDir + '/jquery-nicescroll/jquery.nicescroll.min.js',
     ],
     js: [
         config.frontend + '/js/app.js',
