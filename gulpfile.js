@@ -41,7 +41,7 @@ var includes = {
 };
 
 gulp.task('default', function (done) {
-    runSequence('clean', 'sass', 'inject', done);
+    runSequence('clean', ['sass', 'fonts'], 'inject', done);
 });
 
 gulp.task('clean', function () {
