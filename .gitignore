@@ -2,6 +2,7 @@
 /config/secrets.js
 /data
 /frontend/css
+/frontend/fonts
 /node_modules
 index.html
 npm-debug.log
