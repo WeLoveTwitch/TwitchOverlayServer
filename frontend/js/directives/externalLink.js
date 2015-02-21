@@ -1,4 +1,4 @@
-TwitchOverlay.directive('external', function(TwitchOverlayServer) {
+TwitchOverlay.directive('external', function() {
 	return {
 		restrict: 'A',
 		link: function($scope, element, attrs) {

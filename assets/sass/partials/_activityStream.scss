@@ -14,6 +14,12 @@
         border-bottom: 1px solid #e0e0e0;
     }
 
+    ul {
+        top: 46px;
+        bottom: 0;
+        position: absolute;
+    }
+
     ul, li {
         margin: 0;
         padding: 0;
@@ -37,10 +43,6 @@
                 background-color: #e3e3e3;
             }
         }
-        &.item > div {
-            position: relative;
-            padding: 10px;
-        }
         // 'animation' and 'transition' must have
         // the same duration to work properly
         &.item.ng-enter > div {
@@ -54,22 +56,28 @@
             a {
                 font-weight: 700;
             }
-            &.follower {
+
+            > div {
+                position: relative;
+                padding: 10px;
+            }
+
+            &.follower .inner {
                 border-left: 6px solid $bluejeans-light;
             }
-            &.hosted {
+            &.hosted .inner {
                 border-left: 6px solid $sunflower-light;
             }
-            &.subscription {
+            &.subscription .inner {
                 border-left: 6px solid $grass-light;
             }
-            &.hosting {
+            &.hosting .inner {
                 border-left: 6px solid $sunflower-light;
             }
-            &.unhost {
+            &.unhost .inner {
                 border-left: 6px solid $sunflower-light;
             }
-            &.donation {
+            &.donation .inner {
                 border-left: 6px solid $pinkrose-light;
             }
         }
