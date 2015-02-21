@@ -1,27 +1,48 @@
 .panel-colorful {
-    // Contextual variations
-    .panel-default {
-        background-color: $btn-default-bg;
+    border-width: 0;
+
+    .pad-ver {
+        padding: 15px 0;
+    }
+
+    .mar-no {
+        margin: 0;
+    }
+
+    &.panel-default {
         border-color: $btn-default-bg;
+        > .panel-body {
+            background-color: $btn-default-bg;
+        }
     }
-    .panel-primary {
-        background-color: $brand-primary;
+    &.panel-primary {
         border-color: $brand-primary;
+        > .panel-body {
+            background-color: $brand-primary;
+        }
     }
-    .panel-success {
-        background-color: $brand-success;
+    &.panel-success {
         border-color: $brand-success;
+        > .panel-body {
+            background-color: $brand-success;
+        }
     }
-    .panel-info {
-        background-color: $brand-info;
+    &.panel-info {
         border-color: $brand-info;
+        > .panel-body {
+            background-color: $brand-info;
+        }
     }
-    .panel-warning {
-        background-color: $brand-warning;
-        border-color: $brand-warning;;
+    &.panel-warning {
+        border-color: $brand-warning;
+        > .panel-body {
+            background-color: $brand-warning;
+        }
     }
-    .panel-danger {
-        background-color: $brand-danger;
-        border-color: $brand-danger;;
+    &.panel-danger {
+        border-color: $brand-danger;
+        > .panel-body {
+            background-color: $brand-danger;
+        }
     }
 }

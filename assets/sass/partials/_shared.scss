@@ -4,8 +4,14 @@ html, body {
 }
 
 body {
-    background: inherit url('../images/twitch-background.png') no-repeat bottom left;
+    background-image: url('../images/twitch-background.png');
+    background-repeat: no-repeat;
+    background-position: bottom left;
     overflow: hidden;
+}
+
+.text-thin {
+    font-weight: 300;
 }
 
 .content-container {

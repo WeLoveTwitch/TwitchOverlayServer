@@ -1,6 +1,6 @@
 <aside ng-controller="ActivityStreamController">
     <h1>Activity Stream</h1>
-    <ul nicescroll>
+    <ul class="activity-stream-list" nicescroll>
         <li ng-repeat="activity in activities"
             ng-include="'frontend/templates/activity-stream/partials/' + activity.type + '.html'"
             class="item {{ activity.type }}">
