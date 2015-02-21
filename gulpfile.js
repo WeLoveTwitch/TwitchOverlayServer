@@ -5,26 +5,37 @@ var rename = require('gulp-rename');
 var inject = require('gulp-inject');
 var runSequence = require('gulp-run-sequence');
 var rimraf = require('gulp-rimraf');
+var notify = require('gulp-notify');
 
-var paths = {
+var config = {
+    production: false,
+    assets: './assets',
+    bowerDir: './bower_components',
+    frontend: './frontend'
+};
+
+var includes = {
     sass: [
-        './frontend/sass/**/*.scss'
+        config.assets + '/sass/**/*',
+        config.bowerDir + '/bootstrap-sass-official/assets/stylesheets',
+        config.bowerDir + '/fontawesome/scss',
+        config.bowerDir + '/lato/scss'
     ],
-    cssLibs: [
-        './bower_components/bootstrap/dist/css/bootstrap.css',
-        './bower_components/Bootflat/bootflat/css/bootflat.css',
-        './bower_components/fontawesome/css/font-awesome.css'
+    fonts: [
+        config.bowerDir + '/lato/font',
+        config.bowerDir + '/fontawesome/fonts'
     ],
+    cssLibs: [],
     jsLibs: [
-        './bower_components/jquery/dist/jquery.js',
-        './bower_components/bootstrap/dist/js/bootstrap.js',
-        './bower_components/angular/angular.js',
-        './bower_components/ui-router/release/angular-ui-router.min.js',
-        './bower_components/angular-animate/angular-animate.min.js'
+        config.bowerDir + '/jquery/dist/jquery.js',
+        config.bowerDir + '/bootstrap/dist/js/bootstrap.js',
+        config.bowerDir + '/angular/angular.js',
+        config.bowerDir + '/ui-router/release/angular-ui-router.min.js',
+        config.bowerDir + '/angular-animate/angular-animate.min.js'
     ],
     js: [
-        './frontend/js/app.js',
-        './frontend/js/**/*.js'
+        config.frontend + '/js/app.js',
+        config.frontend + '/js/**/*.js'
     ]
 };
 
@@ -33,28 +44,60 @@ gulp.task('default', function (done) {
 });
 
 gulp.task('clean', function () {
-    return gulp.src('./css/**/**', {read: false}) // much faster
+    return gulp.src('./frontend/css/**/**', {read: false})
         .pipe(rimraf());
 });
 
-gulp.task('sass', function (done) {
-    gulp.src(paths.sass)
-        .pipe(sass())
-        .pipe(gulp.dest('./frontend/css/'))
-        .pipe(rename({ extname: '.css' }))
-        .pipe(gulp.dest('./frontend/css/'))
-        .on('end', done);
+gulp.task('fonts', function () {
+    var paths = includes.fonts.map(function (item) {
+        return item + '/**/*.{woff,woff2}';
+    });
+
+    return gulp.src(paths)
+        .pipe(gulp.dest(config.frontend + '/fonts'));
+});
+
+gulp.task('sass', function () {
+    return gulp.src(config.assets + '/sass/app.scss')
+        .pipe(
+        sass({
+            sourceComments: !config.production,
+            outputStyle: config.production ? 'compressed' : 'nested',
+            includePaths: includes.sass,
+            onError: function (error) {
+                notify.onError({
+                    title: 'Twitch Overlay',
+                    message: 'SASS Compilation Failed',
+                    sound: true
+                })(error);
+
+                console.log(
+                    '[gulp-sass] ERROR: ' + error.message + ' on line ' + error.line + ' in ' + error.file
+                );
+            }
+        })
+    )
+        .pipe(gulp.dest(config.frontend + '/css')
+    );
 });
 
 gulp.task('inject', function () {
-    var target = gulp.src('./index-template.html');
-    var sources = gulp.src(paths.jsLibs.concat(paths.js, paths.cssLibs, './frontend/css/*.css'), {read: false});
+    var target = gulp.src(config.frontend + '/templates/index-template.html');
+    var sources = gulp.src(
+        includes.jsLibs.concat(
+            includes.js,
+            includes.cssLibs,
+            config.frontend + '/css/*.css'
+        ),
+        {read: false}
+    );
+
     return target.pipe(inject(sources, {addRootSlash: false}))
-        .pipe(rename({ basename: 'index' }))
+        .pipe(rename({basename: 'index'}))
         .pipe(gulp.dest('./'));
 });
 
 gulp.task('watch', function () {
-    gulp.start(['sass']);
-    gulp.watch(paths.sass, ['sass']);
+    gulp.start(['sass', 'fonts']);
+    gulp.watch(includes.sass, ['sass', 'fonts']);
 });
