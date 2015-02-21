@@ -10,26 +10,26 @@ TwitchOverlay.config(['$stateProvider', '$urlRouterProvider', function ($statePr
         .state('dashboard', {
             headline: 'Dashboard',
             url: '/dashboard',
-            templateUrl: 'frontend/templates/dashboard.html',
+            templateUrl: 'frontend/templates/pages/dashboard.html',
             controller: 'DashboardController'
         })
         .state('design', {
             headline: 'Design',
             url: '/design',
-            templateUrl: 'frontend/templates/design.html',
+            templateUrl: 'frontend/templates/pages/design.html',
             controller: 'DesignController'
         })
+
 }]);
 
 TwitchOverlay.run(['$rootScope', 'TwitchOverlayServer', 'Tick', '$state', function ($rootScope, TwitchOverlayServer, Tick, $state) {
+
     TwitchOverlayServer.start();
 
-
-    $rootScope.getCurrentState = function(key) {
-        if(!key) return $state.current;
+    $rootScope.getCurrentState = function (key) {
+        if (!key) return $state.current;
         return $state.current[key];
     };
-
 
     var gui = require('nw.gui');
     var win = gui.Window.get();
@@ -37,6 +37,8 @@ TwitchOverlay.run(['$rootScope', 'TwitchOverlayServer', 'Tick', '$state', functi
     try {
         nativeMenuBar.createMacBuiltin("TwitchOverlay");
         win.menu = nativeMenuBar;
-    } catch (ex) {}
+    } catch (ex) {
+        //
+    }
 
 }]);

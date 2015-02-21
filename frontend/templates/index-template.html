@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title></title>
+
+        <!-- inject:css -->
+        <!-- endinject -->
+
+        <!-- inject:js -->
+        <!-- endinject -->
+    </head>
+    <body ng-app="TwitchOverlay">
+        <title-bar></title-bar>
+        <div class="boxed">
+            <nav id="navigation-container" ng-include="'frontend/templates/partials/navigation.html'"></nav>
+            <main class="content-container">
+                <header class="view-header">
+                    <a href="#" class="nav-toggle"><i class="fa fa-bars"></i></a>
+                    <h1>{{ getCurrentState('headline') }}</h1>
+                </header>
+                <div class="main-content" ui-view>
+
+                </div>
+            </main>
+            <div class="activity-stream" ng-include="'frontend/templates/activity-stream/activity-stream.html'"></div>
+        </div>
+    </body>
+</html>

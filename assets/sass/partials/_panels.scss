@@ -1,0 +1,27 @@
+.panel-colorful {
+    // Contextual variations
+    .panel-default {
+        background-color: $btn-default-bg;
+        border-color: $btn-default-bg;
+    }
+    .panel-primary {
+        background-color: $brand-primary;
+        border-color: $brand-primary;
+    }
+    .panel-success {
+        background-color: $brand-success;
+        border-color: $brand-success;
+    }
+    .panel-info {
+        background-color: $brand-info;
+        border-color: $brand-info;
+    }
+    .panel-warning {
+        background-color: $brand-warning;
+        border-color: $brand-warning;;
+    }
+    .panel-danger {
+        background-color: $brand-danger;
+        border-color: $brand-danger;;
+    }
+}
