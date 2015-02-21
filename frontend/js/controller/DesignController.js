@@ -10,6 +10,10 @@ TwitchOverlay.controller('DesignController', ['$scope', 'FrontendComponents', fu
     $scope.saveSnapshot = function() {
         console.log('save');
         FrontendComponents.save();
-    }
+    };
+
+    $scope.startEditMode = function() {
+        FrontendComponents.startEditMode();
+    };
 
 }]);

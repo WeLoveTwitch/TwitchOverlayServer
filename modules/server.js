@@ -38,21 +38,10 @@ function TwitchOverlayServer(config) {
     });
 
     io.on('connection', function (socket) {
-        that._sockets.push(socket);
-
-        console.log('client connected');
-
-        that._componentFactory.registerClient(socket);
+        that._componentFactory.addSocket(socket);
 
         that._twitch.getEmotes(function (emotes) {
             socket.emit('emotes', emotes);
-        });
-
-        socket.on('disconnect', function() {
-            that._sockets = that._sockets.filter(function(s) {
-                that._componentFactory.unregisterClient(socket);
-                return s.id === socket;
-            });
         });
     });
 

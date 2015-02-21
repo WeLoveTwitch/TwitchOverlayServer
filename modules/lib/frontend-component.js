@@ -9,6 +9,8 @@ function FrontendComponent() {
 
 inherits(FrontendComponent, EventEmitter);
 
+FrontendComponent.DELIMITER = ':';
+
 var proto = FrontendComponent.prototype;
 
 proto.setup = function(name) {
@@ -19,13 +21,12 @@ proto.setup = function(name) {
         x: 0,
         y: 0
     };
+
     this._id = uuid();
 };
 
 proto.bindGenericEvents = function(socket) {
-    this.bindEvent(null, 'enterEditMode', socket.id, function() {
-        socket.emit(this._getEventName('enterEditMode'));
-    });
+
 };
 
 proto.bindEvent = function(module, event, socketId, cb) {
@@ -62,7 +63,7 @@ proto.unbindEvents = function(socketId) {
 };
 
 proto._getEventName = function(eventName) {
-    return this.name + ':' + eventName;
+    return this.name + FrontendComponent.DELIMITER + eventName + FrontendComponent.DELIMITER + this._id;
 };
 
 proto.getSaveData = function() {
@@ -77,6 +78,18 @@ proto.setSaveData = function(data) {
     for(var key in data) {
         this[key] = data[key];
     }
+};
+
+proto.setEditMode = function(onOff) {
+    this._eventEmitter.emit('triggerFrontendEvent', this._getEventName('setEditMode'), onOff);
+};
+
+
+proto.setPosition = function(pos) {
+    this.position = pos;
+    this._eventEmitter.emit('event', this._getEventName('position'), {
+        position: this.position
+    });
 };
 
 module.exports = FrontendComponent;
