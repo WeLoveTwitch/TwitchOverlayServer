@@ -48,7 +48,7 @@ gulp.task('clean', function () {
         .pipe(rimraf());
 });
 
-gulp.task('fonts', function() {
+gulp.task('fonts', function () {
     var paths = includes.fonts.map(function (item) {
         return item + '/**/*.{woff,woff2}';
     });
@@ -57,7 +57,7 @@ gulp.task('fonts', function() {
         .pipe(gulp.dest(config.frontend + '/fonts'));
 });
 
-gulp.task('sass', function() {
+gulp.task('sass', function () {
     return gulp.src(config.assets + '/sass/app.scss')
         .pipe(
         sass({
@@ -93,7 +93,7 @@ gulp.task('inject', function () {
     );
 
     return target.pipe(inject(sources, {addRootSlash: false}))
-        .pipe(rename({ basename: 'index' }))
+        .pipe(rename({basename: 'index'}))
         .pipe(gulp.dest('./'));
 });
 
