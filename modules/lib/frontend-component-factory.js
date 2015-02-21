@@ -11,27 +11,27 @@ function FrontendComponentFactory(db, deps) {
     this._db = db;
     this._deps = deps;
     this._componentClasses = {
-        FollowerAlert: {
+        followerAlert: {
             constructor: FollowerAlert,
             deps: ['twitch'],
             name: 'followerAlert'
         },
-        NewestFollower: {
+        newestFollower: {
             constructor: NewestFollower,
             deps: ['twitch'],
             name: 'newestFollower'
         },
-        Followers: {
+        followers: {
             constructor: Followers,
             deps: ['twitch', 'serverData'],
             name: 'followers'
         },
-        Chat: {
+        chat: {
             constructor: Chat,
             deps: ['chat'],
             name: 'chat'
         },
-        Logo: {
+        logo: {
             constructor: Logo,
             deps: [],
             name: 'logo'
@@ -41,14 +41,28 @@ function FrontendComponentFactory(db, deps) {
     for(var type in this._componentClasses) {
         this._listOfAvailableComponents.push(type)
     }
+
+    this.restore();
 }
 
 var proto = FrontendComponentFactory.prototype;
 
 proto.createComponent = function(type) {
+
+    var component = this._createComponent(type);
+    if (!component) {
+        return;
+    }
+
     var opts = this._componentClasses[type];
-    if(!opts) {
-        return false;
+    component.setup(opts.name);
+    return component;
+};
+
+proto._createComponent = function(type) {
+    var opts = this._componentClasses[type];
+    if (!opts) {
+        return;
     }
     var args = [];
     opts.deps.forEach(function(dep) {
@@ -57,7 +71,7 @@ proto.createComponent = function(type) {
 
     var Constructor = opts.constructor.bind.apply(opts.constructor, [null].concat(args));
     var component = new Constructor();
-    component.setName(opts.name);
+
     this._components.push(component);
 
     return component;
@@ -81,6 +95,38 @@ proto.registerClient = function() {
 
 proto.unregisterClient = function() {
     // @TODO implement
+};
+
+proto.save = function() {
+    var saveData = [];
+    this.getActiveComponents().forEach(function(component) {
+        var data = component.getSaveData();
+        saveData.push(data);
+    });
+
+    var snapshot = {
+        created: new Date().getTime(),
+        data: saveData
+    };
+
+    // save a snapshot of the current state
+    this._db.insert(snapshot);
+};
+
+proto.restore = function(cb) {
+    cb = cb || function() {};
+    var that = this;
+    this._db.findOne({}).sort({created: -1}).exec(function(err, snapshot) {
+
+        if(err || !snapshot) {
+            return cb(err, !!snapshot);
+        }
+
+        snapshot.data.forEach(function(componentData) {
+            var component = that._createComponent(componentData.name);
+            component.setSaveData(componentData);
+        });
+    });
 };
 
 module.exports = FrontendComponentFactory;

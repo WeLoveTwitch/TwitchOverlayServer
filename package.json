@@ -21,7 +21,8 @@
     "queue-async": "^1.0.7",
     "request": "^2.53.0",
     "socket.io": "^1.3.2",
-    "twitch-irc": "^1.1.0"
+    "twitch-irc": "^1.1.0",
+    "uuid": "^2.0.1"
   },
   "devDependencies": {
     "gulp-concat": "^2.4.3",
@@ -37,6 +38,7 @@
     "width": 1280,
     "height": 720,
     "min_width": 1024,
-    "min_height": 768
+    "min_height": 768,
+    "icon": "./assets/images/logo.png"
   }
 }

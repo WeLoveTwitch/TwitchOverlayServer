@@ -1,18 +1,26 @@
 var inherits = require('util').inherits;
 var EventEmitter = require('events').EventEmitter;
+var uuid = require('uuid');
 
 function FrontendComponent() {
     EventEmitter.apply(this);
     this._cachedEvents = {};
-    this.position = {
-        x: 0,
-        y: 0
-    }
 }
 
 inherits(FrontendComponent, EventEmitter);
 
 var proto = FrontendComponent.prototype;
+
+proto.setup = function(name) {
+
+    this.name = name;
+
+    this.position = {
+        x: 0,
+        y: 0
+    };
+    this._id = uuid();
+};
 
 proto.bindGenericEvents = function(socket) {
     this.bindEvent(null, 'enterEditMode', socket.id, function() {
@@ -54,11 +62,21 @@ proto.unbindEvents = function(socketId) {
 };
 
 proto._getEventName = function(eventName) {
-    return this._name + ':' + eventName;
+    return this.name + ':' + eventName;
 };
 
-proto.setName = function(name) {
-    this._name = name;
+proto.getSaveData = function() {
+    return {
+        _id: this._id,
+        name: this.name, 
+        position: this.position
+    }
+};
+
+proto.setSaveData = function(data) {
+    for(var key in data) {
+        this[key] = data[key];
+    }
 };
 
 module.exports = FrontendComponent;

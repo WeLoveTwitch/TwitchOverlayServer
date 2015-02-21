@@ -3,24 +3,31 @@
         <i class="fa fa-paint-brush"></i> Overlay Design
     </div>
     <div class="panel-body">
-        <button class="btn btn-primary" ng-click="enterEditMode()">
-            <i class="fa fa-cog"></i> enter edit mode
-        </button>
-
-        <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                <i class="fa fa-plus"></i> Add Component <span class="caret"></span>
+        <div class="pull-left">
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    <i class="fa fa-plus"></i> Add Component <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li ng-repeat="component in availableComponents" ng-click="create(component)"><a href="#">{{component}}</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="pull-right">
+            <button class="btn btn-primary" ng-click="enterEditMode()">
+                <i class="fa fa-cog"></i> enter edit mode
             </button>
-            <ul class="dropdown-menu" role="menu">
-                <li ng-repeat="component in availableComponents" ng-click="create(component)"><a href="#">{{component}}</a></li>
-            </ul>
+
+            <button class="btn btn-success" ng-click="saveSnapshot()">
+                <i class="fa fa-save"></i> save snapshot
+            </button>
         </div>
     </div>
 </div>
 
 <div class="panel panel-default" ng-repeat="component in activeComponents">
     <div class="panel-heading">
-        {{component._name}}
+        {{component.name}} <small class="text-muted">({{component._id}})<small>
     </div>
     <div class="panel-body">
         {{component.position}}

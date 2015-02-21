@@ -18,6 +18,9 @@ TwitchOverlay.service('FrontendComponents', ['TwitchOverlayServer', function (Tw
         },
         create: function(type) {
             return componentFactory.createComponent(type);
+        },
+        save: function() {
+            return componentFactory.save();
         }
     };
 
