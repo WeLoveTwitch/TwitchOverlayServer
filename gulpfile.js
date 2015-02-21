@@ -50,7 +50,7 @@ gulp.task('clean', function () {
 
 gulp.task('fonts', function () {
     var paths = includes.fonts.map(function (item) {
-        return item + '/**/*.{woff,woff2}';
+        return item + '/**/*';
     });
 
     return gulp.src(paths)
