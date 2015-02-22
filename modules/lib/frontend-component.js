@@ -92,4 +92,10 @@ proto.setPosition = function(pos) {
     });
 };
 
+proto.positionChanged = function() {
+    this._eventEmitter.emit('event', this._getEventName('position'), {
+        position: this.position
+    });
+};
+
 module.exports = FrontendComponent;

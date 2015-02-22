@@ -30,6 +30,7 @@
         {{component.name}} <small class="text-muted">({{component._id}})<small>
     </div>
     <div class="panel-body">
-        {{component.position}}
+        <input type="text" ng-model="component.position.x" ng-change="setPosition(component)" class="form-control input-sm">
+        <input type="text" ng-model="component.position.y" ng-change="setPosition(component)" class="form-control input-sm">
     </div>
 </div>
