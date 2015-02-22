@@ -1,6 +1,11 @@
 <form>
     <div class="form-group">
         <label>Text:</label>
-        <input type="text" class="form-control" placeholder="your awesome text here" ng-model="component.text" ng-change="textChanged(component)">
+        <input
+            type="text"
+            class="form-control"
+            placeholder="your awesome text here"
+            ng-model="component.text"
+            ng-change="component.textChanged()">
     </div>
 </form>

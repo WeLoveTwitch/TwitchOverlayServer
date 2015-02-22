@@ -16,12 +16,4 @@ TwitchOverlay.controller('DesignController', ['$scope', 'FrontendComponents', fu
         FrontendComponents.startEditMode();
     };
 
-    $scope.setPosition = function(component) {
-        component.positionChanged();
-    };
-
-    $scope.textChanged = function(component) {
-        component.textChanged();
-    };
-
 }]);
