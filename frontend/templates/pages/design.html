@@ -30,7 +30,17 @@
         {{component.name}} <small class="text-muted">({{component._id}})<small>
     </div>
     <div class="panel-body">
-        <input type="text" ng-model="component.position.x" ng-change="setPosition(component)" class="form-control input-sm">
-        <input type="text" ng-model="component.position.y" ng-change="setPosition(component)" class="form-control input-sm">
+
+        <form class="form-inline">
+            <div class="form-group">
+                <input type="text" ng-model="component.position.x" ng-change="setPosition(component)" class="form-control input-sm">
+            </div>
+            <div class="form-group">
+                <input type="text" ng-model="component.position.y" ng-change="setPosition(component)" class="form-control input-sm">
+            </div>
+        </form>
+
+        <hr>
+        <div ng-include="'frontend/templates/components/' + component.name + '.html'"></div>
     </div>
 </div>

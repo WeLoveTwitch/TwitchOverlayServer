@@ -6,6 +6,7 @@ var NewestFollower = require('../components/newest-follower');
 var Followers = require('../components/followers');
 var Chat = require('../components/chat');
 var Logo = require('../components/logo');
+var Text = require('../components/text');
 
 function FrontendComponentFactory(db, deps) {
     this._sockets = [];
@@ -38,6 +39,11 @@ function FrontendComponentFactory(db, deps) {
             constructor: Logo,
             deps: [],
             name: 'logo'
+        },
+        text: {
+            constructor: Text,
+            deps: [],
+            name: 'text'
         }
     };
 

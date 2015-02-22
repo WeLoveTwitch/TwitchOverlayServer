@@ -20,4 +20,8 @@ TwitchOverlay.controller('DesignController', ['$scope', 'FrontendComponents', fu
         component.positionChanged();
     };
 
+    $scope.textChanged = function(component) {
+        component.textChanged();
+    };
+
 }]);
