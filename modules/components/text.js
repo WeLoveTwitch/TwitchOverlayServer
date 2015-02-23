@@ -16,9 +16,14 @@ proto.bindEvents = function(socket) {
 };
 
 proto.textChanged = function() {
+    console.log('emmiting event: ');
     this._eventEmitter.emit('event', this._getEventName('text'), {
         text: this.text
     });
+};
+
+proto.styleChanged = function(property, value) {
+    console.log('Text::styleChanged', property, value);
 };
 
 module.exports = Text;
