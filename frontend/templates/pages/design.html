@@ -14,8 +14,8 @@
             </div>
         </div>
         <div class="pull-right">
-            <button class="btn btn-primary" ng-click="startEditMode()">
-                <i class="fa fa-cog"></i> enter edit mode
+            <button class="btn btn-primary" ng-click="toggleEditMode()">
+                <i class="fa fa-cog"></i> {{ isInEditMode ? "leave" : "enter" }} edit mode
             </button>
 
             <button class="btn btn-success" ng-click="saveSnapshot()">
@@ -27,16 +27,26 @@
 
 <div class="panel panel-default" ng-repeat="component in activeComponents">
     <div class="panel-heading">
-        {{component.name}} <small class="text-muted">({{component._id}})<small>
+        {{component.name}} <small class="text-muted">({{component._id}})</small>
     </div>
     <div class="panel-body">
 
         <form class="form-inline">
             <div class="form-group">
-                <input type="text" ng-model="component.position.x" ng-change="component.positionChanged()" class="form-control input-sm">
+                <input
+                    type="text"
+                    class="form-control input-sm"
+                    ng-model="component.position.x"
+                    ng-change="component.positionChanged()"
+                    ng-disabled="isDisabled">
             </div>
             <div class="form-group">
-                <input type="text" ng-model="component.position.y" ng-change="component.positionChanged()" class="form-control input-sm">
+                <input
+                    type="text"
+                    class="form-control input-sm"
+                    ng-model="component.position.y"
+                    ng-change="component.positionChanged()"
+                    ng-disabled="isDisabled">
             </div>
         </form>
 

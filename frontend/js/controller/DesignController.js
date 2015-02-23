@@ -1,5 +1,7 @@
 TwitchOverlay.controller('DesignController', ['$scope', 'FrontendComponents', function($scope, FrontendComponents) {
 
+    $scope.isDisabled = true;
+
     $scope.availableComponents = FrontendComponents.getAvailableComponents();
     $scope.activeComponents = FrontendComponents.getActiveComponents();
 
@@ -12,8 +14,14 @@ TwitchOverlay.controller('DesignController', ['$scope', 'FrontendComponents', fu
         FrontendComponents.save();
     };
 
-    $scope.startEditMode = function() {
-        FrontendComponents.startEditMode();
+    $scope.toggleEditMode = function() {
+        $scope.isDisabled = !$scope.isDisabled;
+
+        if ($scope.isDisabled) {
+            FrontendComponents.startEditMode();
+        } else {
+            FrontendComponents.endEditMode();
+        }
     };
 
 }]);
