@@ -1,4 +1,4 @@
-TwitchOverlay.directive('colorPicker', function () {
+TwitchOverlay.directive('colorPicker', ['$timeout', function ($timeout) {
 
     return {
         restrict: 'EA',
@@ -7,22 +7,35 @@ TwitchOverlay.directive('colorPicker', function () {
             callback: '&'
         },
         link: function (scope, element, attrs, ngModelCtrl) {
-            scope.color = attrs.color || "#ffffff";
+            scope.color = ngModelCtrl.$viewValue || "#6441a5";
 
             var picker = element.colpick({
+                layout: 'rgbhex',
+                color: scope.color,
+                onChange: function (hsb, hex, rgb, element, bySetColor) {
+                    if (bySetColor) {
+                        update(hex);
+                    }
+                },
                 onSubmit: function (hsb, hex, rgb, element, bySetColor) {
-                    scope.color = '#' + hex;
-
-                    scope.$apply(function () {
-                        ngModelCtrl.$setViewValue(scope.color);
-                    });
-
-                    scope.callback({ value: hex });
+                    update(hex);
                 }
             });
 
-            element.colpickSetColor(scope.color.replace('#', ''));
+            function update(hexColor) {
+                scope.color = '#' + hexColor;
+
+                $timeout(function() {
+                    scope.$apply(function () {
+                        ngModelCtrl.$setViewValue(scope.color);
+                    });
+                });
+
+                scope.callback({ value: hexColor });
+            }
+
+            picker.colpickSetColor(scope.color);
         }
     }
 
-});
+}]);
