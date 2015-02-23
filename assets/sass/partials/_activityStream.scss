@@ -20,6 +20,7 @@
         overflow-y: hidden;
         position: absolute;
         padding: 0;
+        margin: 0;
         list-style: none;
     }
 
@@ -43,8 +44,6 @@
                 background-color: #e3e3e3;
             }
         }
-        // 'animation' and 'transition' must have
-        // the same duration to work properly
         &.item.ng-enter > div {
             -webkit-animation: add-item 2s;
         }

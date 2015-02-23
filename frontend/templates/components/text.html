@@ -9,4 +9,19 @@
             ng-change="component.textChanged()"
             ng-disabled="isDisabled">
     </div>
+    <div class="form-group">
+        <label>Color:</label>
+        <color-picker
+            class="color-preview"
+            ng-model="component.color"
+            callback="component.styleChanged('color', value)">
+            <div style="background: {{ component.color }}"></div>
+        </color-picker>
+        <input
+                type="text"
+                class="form-control"
+                value="{{ component.color }}"
+                ng-model="component.color"
+                ng-disabled="isDisabled">
+    </div>
 </form>

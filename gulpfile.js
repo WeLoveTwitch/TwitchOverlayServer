@@ -25,7 +25,9 @@ var includes = {
         config.bowerDir + '/lato/font',
         config.bowerDir + '/fontawesome/fonts'
     ],
-    cssLibs: [],
+    cssLibs: [
+        config.bowerDir + '/colpick/css/colpick.css'
+    ],
     jsLibs: [
         config.bowerDir + '/jquery/dist/jquery.js',
         config.bowerDir + '/bootstrap-sass-official/assets/javascripts/bootstrap.js',
@@ -33,6 +35,7 @@ var includes = {
         config.bowerDir + '/ui-router/release/angular-ui-router.min.js',
         config.bowerDir + '/angular-animate/angular-animate.min.js',
         config.bowerDir + '/jquery-nicescroll/jquery.nicescroll.min.js',
+        config.bowerDir + '/colpick/js/colpick.js'
     ],
     js: [
         config.frontend + '/js/app.js',

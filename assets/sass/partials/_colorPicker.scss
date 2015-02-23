@@ -1,0 +1,42 @@
+.color-preview {
+    position: relative;
+    border: 1px solid #dedede;
+    border-right-width: 0;
+    display: inline-block;
+    cursor: pointer;
+
+    > div {
+        width: 30px;
+        height: 30px;
+        border: 1px solid #fff;
+    }
+}
+
+// Fix colpick's default styles
+
+.colpick {
+    .colpick_field_letter {
+        width: auto;
+        padding: 0 4px;
+    }
+
+    .colpick_rgb_r {
+        top: 40px;
+    }
+
+    .colpick_rgb_g {
+        top: 65px;
+    }
+
+    .colpick_rgb_b {
+        top: 90px;
+    }
+
+    .colpick_hex_field {
+        top: 115px;
+    }
+
+    .colpick_submit {
+        top: 142px;
+    }
+}
