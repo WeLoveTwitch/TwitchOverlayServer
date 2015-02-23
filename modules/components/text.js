@@ -22,8 +22,8 @@ proto.textChanged = function() {
     });
 };
 
-proto.fontColorChanged = function(color) {
-    console.log('Text::fontColorChanged', color);
+proto.styleChanged = function(property, value) {
+    console.log('Text::styleChanged', property, value);
 };
 
 module.exports = Text;

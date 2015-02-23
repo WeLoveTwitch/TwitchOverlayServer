@@ -2,22 +2,26 @@ TwitchOverlay.directive('colorPicker', function () {
 
     return {
         restrict: 'EA',
+        require: 'ngModel',
         scope: {
-            dataToChange: '=',
-            callOnChange: '='
+            callback: '&'
         },
         link: function (scope, element, attrs, ngModelCtrl) {
-            scope.dataToChange = scope.dataToChange || "#ffffff";
+            scope.color = attrs.color || "#ffffff";
 
-            element.colpick({
-                onSubmit: function (hsb, hex, rgb, el, bySetColor) {
-                    console.log('ColorPicker::link', hex);
-                    scope.dataToChange = hex;
-                    scope.callOnChange(hex);
+            var picker = element.colpick({
+                onSubmit: function (hsb, hex, rgb, element, bySetColor) {
+                    scope.color = '#' + hex;
+
+                    scope.$apply(function () {
+                        ngModelCtrl.$setViewValue(scope.color);
+                    });
+
+                    scope.callback({ value: hex });
                 }
             });
 
-            element.colpickSetColor(scope.dataToChange.replace("#", ""));
+            element.colpickSetColor(scope.color.replace('#', ''));
         }
     }
 

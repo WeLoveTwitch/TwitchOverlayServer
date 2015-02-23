@@ -9,8 +9,13 @@
             ng-change="component.textChanged()">
     </div>
     <div class="form-group">
-        <label style="color: #{{ component.fontColor }}">Color:</label>
-        {{ component.fontColor }}
-        <color-picker data-to-change="component.fontColor" call-on-change="component.fontColorChanged">Color Picker</color-picker>
+        <label style="color: {{ component.color }}">Color:</label>
+        [ <button color-picker
+            ng-model="component.color"
+            color="{{ component.color }}"
+            callback="component.styleChanged('color', value)">
+            Color Picker
+        </button> ]
+        Color: {{ component.color }}
     </div>
 </form>
