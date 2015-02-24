@@ -9,6 +9,7 @@ var Logo = require('../components/logo');
 var Text = require('../components/text');
 
 function FrontendComponentFactory(db, deps) {
+    console.debug('FrontentComponentFactory', db, deps);
     this._sockets = [];
     this._components = [];
     this._listOfAvailableComponents = [];
@@ -47,7 +48,7 @@ function FrontendComponentFactory(db, deps) {
         }
     };
 
-    for(var type in this._componentClasses) {
+    for (var type in this._componentClasses) {
         this._listOfAvailableComponents.push(type)
     }
 
@@ -56,9 +57,10 @@ function FrontendComponentFactory(db, deps) {
 
 var proto = FrontendComponentFactory.prototype;
 
-proto.createComponent = function(type) {
-
+proto.createComponent = function (type) {
+    console.debug('FrontentComponentFactory::createComponent', type);
     var component = this._createComponent(type);
+
     if (!component) {
         return;
     }
@@ -71,14 +73,17 @@ proto.createComponent = function(type) {
     return component;
 };
 
-proto._createComponent = function(type) {
+proto._createComponent = function (type) {
+    console.debug('FrontentComponentFactory::_createComponent', type);
     var opts = this._componentClasses[type];
+    var args = [];
+    var that = this;
+
     if (!opts) {
         return;
     }
-    var args = [];
-    var that = this;
-    opts.deps.forEach(function(dep) {
+
+    opts.deps.forEach(function (dep) {
         args.push(this._deps[dep])
     }.bind(this));
 
@@ -86,10 +91,14 @@ proto._createComponent = function(type) {
     var component = new Constructor();
 
     component._eventEmitter = new EventEmitter();
-    component._eventEmitter.on('event', function(eventName, data) {
+
+    component._eventEmitter.on('event', function (eventName, data) {
+        console.debug('FrontendComponentFactory::_createComponent - on(\'event\')', eventName, data);
         that.emitToComponentUpdate(eventName, data);
     });
-    component._eventEmitter.on('triggerFrontendEvent', function(eventName, data) {
+
+    component._eventEmitter.on('triggerFrontendEvent', function (eventName, data) {
+        console.debug('FrontendComponentFactory::_createComponent - on(\'triggerFrontendEvent\')', eventName, data);
         that.emitToAllSockets('triggerFrontendEvent', eventName, data);
     });
 
@@ -98,43 +107,53 @@ proto._createComponent = function(type) {
     return component;
 };
 
-proto.removeComponent = function() {
+proto.removeComponent = function () {
+    console.debug('FrontentComponentFactory::removeComponent');
     // @TODO: remove component and tell the client
 };
 
-proto.setEditMode = function(onOff) {
-    this.getActiveComponents().forEach(function(component) {
+proto.setEditMode = function (onOff) {
+    console.debug('FrontentComponentFactory::setEditMode', onOff);
+    this.getActiveComponents().forEach(function (component) {
         component.setEditMode(onOff);
     });
 };
 
-proto.getActiveComponents = function() {
+proto.getActiveComponents = function () {
+    console.debug('FrontentComponentFactory::getActiveComponents', this._components);
     return this._components;
 };
 
-proto.getAvailableComponents = function() {
+proto.getAvailableComponents = function () {
+    console.debug('FrontentComponentFactory::getAvailableComponents', this._listOfAvailableComponents);
     return this._listOfAvailableComponents;
 };
 
-proto.registerClient = function(socket) {
-    console.log('client connected');
+proto.registerClient = function (socket) {
+    console.debug('FrontentComponentFactory::registerClient', socket);
     socket.emit('components', this.getSaveData());
 };
 
-proto.unregisterClient = function() {
+proto.unregisterClient = function () {
+    console.debug('FrontentComponentFactory::unregisterClient');
     // @TODO implement
 };
 
-proto.getSaveData = function() {
+proto.getSaveData = function () {
+    console.debug('FrontentComponentFactory::getSaveData');
     var saveData = [];
-    this.getActiveComponents().forEach(function(component) {
+
+    this.getActiveComponents().forEach(function (component) {
         var data = component.getSaveData();
         saveData.push(data);
     });
+
     return saveData;
 };
 
-proto.save = function() {
+proto.save = function () {
+    console.debug('FrontentComponentFactory::save');
+
     var snapshot = {
         created: new Date().getTime(),
         data: this.getSaveData()
@@ -144,40 +163,47 @@ proto.save = function() {
     this._db.insert(snapshot);
 };
 
-proto.restore = function(cb) {
-    cb = cb || function() {};
+proto.restore = function (cb) {
+    console.debug('FrontentComponentFactory::restore', cb || function () {});
     var that = this;
-    this._db.findOne({}).sort({created: -1}).exec(function(err, snapshot) {
 
-        if(err || !snapshot) {
+    cb = cb || function () {};
+
+    this._db.findOne({}).sort({ created: -1 }).exec(function (err, snapshot) {
+        if (err || !snapshot) {
             return cb(err, !!snapshot);
         }
 
-        snapshot.data.forEach(function(componentData) {
+        snapshot.data.forEach(function (componentData) {
             var component = that._createComponent(componentData.name);
             component.setSaveData(componentData);
         });
     });
 };
 
-proto.emitToComponentUpdate = function(eventName, data) {
-    this._sockets.forEach(function(socket) {
+proto.emitToComponentUpdate = function (eventName, data) {
+    console.debug('FrontentComponentFactory::emitToComponentUpdate', eventName, data);
+    this._sockets.forEach(function (socket) {
         socket.emit('componentUpdate', eventName, data);
     });
 };
 
-proto.emitToAllSockets = function(eventName, data) {
-    this._sockets.forEach(function(socket) {
+proto.emitToAllSockets = function (eventName, data) {
+    console.debug('FrontentComponentFactory::emitToAllSockets', eventName, data);
+    this._sockets.forEach(function (socket) {
         socket.emit(eventName, data);
     });
 };
 
-proto.addSocket = function(socket) {
+proto.addSocket = function (socket) {
+    console.debug('FrontentComponentFactory::addSocket', socket);
     var that = this;
+
     this._sockets.push(socket);
     this.registerClient(socket);
-    socket.on('disconnect', function() {
-        that._sockets = that._sockets.filter(function(s) {
+
+    socket.on('disconnect', function () {
+        that._sockets = that._sockets.filter(function (s) {
             that.unregisterClient(socket);
             return s.id === socket;
         });
