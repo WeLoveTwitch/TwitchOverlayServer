@@ -5,7 +5,7 @@ var FollowerAlert = require('../components/follower-alert');
 var NewestFollower = require('../components/newest-follower');
 var Followers = require('../components/followers');
 var Chat = require('../components/chat');
-var Logo = require('../components/logo');
+var Image = require('../components/image');
 var Text = require('../components/text');
 
 function FrontendComponentFactory(db, deps) {
@@ -36,10 +36,10 @@ function FrontendComponentFactory(db, deps) {
             deps: ['chat'],
             name: 'chat'
         },
-        logo: {
-            constructor: Logo,
+        image: {
+            constructor: Image,
             deps: [],
-            name: 'logo'
+            name: 'image'
         },
         text: {
             constructor: Text,

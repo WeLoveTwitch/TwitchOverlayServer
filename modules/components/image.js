@@ -1,16 +1,20 @@
 var FrontendComponent = require('../lib/frontend-component');
 var inherits = require('util').inherits;
 
-function Logo() {
+function Image() {
     FrontendComponent.apply(this);
 }
 
-inherits(Logo, FrontendComponent);
+inherits(Image, FrontendComponent);
 
-var proto = Logo.prototype;
+var proto = Image.prototype;
 
 proto.bindEvents = function(socket) {
     this.bindGenericEvents(socket);
 };
 
-module.exports = Logo;
+proto.handleImageUrl = function(fileUrl) {
+  console.log(fileUrl);
+};
+
+module.exports = Image;
