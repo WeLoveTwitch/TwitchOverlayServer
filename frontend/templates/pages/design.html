@@ -15,7 +15,7 @@
         </div>
         <div class="pull-right">
             <button class="btn btn-primary" ng-click="toggleEditMode()">
-                <i class="fa fa-cog"></i> {{ isInEditMode ? "leave" : "enter" }} edit mode
+                <i class="fa fa-cog"></i> {{ isDisabled ? "enter" : "leave" }} edit mode
             </button>
 
             <button class="btn btn-success" ng-click="saveSnapshot()">
@@ -36,16 +36,16 @@
                 <input
                     type="text"
                     class="form-control input-sm"
-                    ng-model="component.position.x"
-                    ng-change="component.positionChanged()"
+                    ng-model="component.settings.left"
+                    ng-change="component.styleChanged('left')"
                     ng-disabled="isDisabled">
             </div>
             <div class="form-group">
                 <input
                     type="text"
                     class="form-control input-sm"
-                    ng-model="component.position.y"
-                    ng-change="component.positionChanged()"
+                    ng-model="component.settings.top"
+                    ng-change="component.styleChanged('top')"
                     ng-disabled="isDisabled">
             </div>
         </form>

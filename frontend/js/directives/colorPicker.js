@@ -7,7 +7,7 @@ TwitchOverlay.directive('colorPicker', ['$timeout', function ($timeout) {
             callback: '&'
         },
         link: function (scope, element, attrs, ngModelCtrl) {
-            scope.color = ngModelCtrl.$viewValue || "#6441a5";
+            scope.color = ngModelCtrl.$viewValue || "#ffffff";
 
             var picker = element.colpick({
                 layout: 'rgbhex',
@@ -25,13 +25,13 @@ TwitchOverlay.directive('colorPicker', ['$timeout', function ($timeout) {
             function update(hexColor) {
                 scope.color = '#' + hexColor;
 
-                $timeout(function() {
+                $timeout(function () {
                     scope.$apply(function () {
                         ngModelCtrl.$setViewValue(scope.color);
                     });
                 });
 
-                scope.callback({ value: hexColor });
+                scope.callback({value: '#' + hexColor});
             }
 
             picker.colpickSetColor(scope.color);
