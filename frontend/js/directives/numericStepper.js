@@ -1,36 +1,45 @@
-TwitchOverlay.directive('numericStepper', function () {
+TwitchOverlay.directive('numericStepper', ['$interval', '$timeout', function ($interval, $timeout) {
   return {
     restrict: 'EA',
     require: 'ngModel',
     scope: {
-      ngModel: '='
+      ngModel: '=',
+      ngChange: '&'
     },
     replace: true,
     templateUrl: 'frontend/templates/directives/numeric-stepper.html',
     link: function (scope, element, attrs, ngModelCtrl) {
-      console.log('NumericStepper::link', ngModelCtrl.$viewValue);
+      const KEY_UP = 38,
+          KEY_DOWN = 40;
 
-      var sizingUnit = null;
-      var css3Lengths = [
-        // Percentage
-        '%',
-        // Font Relative
-        'em', 'ex', 'ch', 'rem',
-        // Viewport Relative
-        'vw', 'vh', 'vmin', 'vmax',
-        // Absolute
-        'cm', 'mm', 'in', 'px', 'pt', 'pc'
-      ];
+      var intervalPromise = null,
+          sizingUnit = "px",
+          css3Lengths = [
+            // Percentage
+            '%',
+            // Font Relative
+            'em', 'ex', 'ch', 'rem',
+            // Viewport Relative
+            'vw', 'vh', 'vmin', 'vmax',
+            // Absolute
+            'cm', 'mm', 'in', 'px', 'pt', 'pc'
+          ];
 
-      scope.$watch(function () {
-        return ngModelCtrl.$modelValue;
-      }, function (newValue, oldValue) {
-        updateValue(0);
+      element.bind("keydown keypress", function (event) {
+        switch (event.which) {
+          case KEY_UP:
+            scope.increment();
+            event.preventDefault();
+            break;
+          case KEY_DOWN:
+            scope.decrement();
+            event.preventDefault();
+            break;
+        }
       });
 
-      ngModelCtrl.$formatters.unshift(function (value) {
-        value = isNaN(parseInt(value)) ? 0 : value;
-        return value;
+      element.find('button').bind("blur", function (event) {
+        $interval.cancel(intervalPromise);
       });
 
       scope.increment = function () {
@@ -41,19 +50,71 @@ TwitchOverlay.directive('numericStepper', function () {
         updateValue(-1);
       };
 
-      function updateValue(amount) {
-        var matches = ngModelCtrl.$viewValue.toString().split(/(-?\d+)/);
-        var value = (parseInt(matches[1]) || 0) + (amount || 0);
-        sizingUnit = matches[2].trim();
+      scope.toggleMouse = function (value) {
+        $interval.cancel(intervalPromise);
+
+        if (value) {
+          intervalPromise = $interval(function () {
+            if (value == 'increment') {
+              scope.increment();
+            } else {
+              scope.decrement();
+            }
+          }, 75);
+        }
+      };
+
+      scope.textChanged = function() {
+        $timeout(function () {
+          updateValue();
+          scope.ngChange();
+        }, 0);
+      };
+
+      function initialize() {
+        updateValue(null, true);
+      }
+
+      function updateValue(amount, init) {
+        var valueObject = getValueObject(),
+            value = '';
+
+        if (valueObject) {
+          value = (valueObject.value || 0);
+          value = amount ? value + amount : value;
+          sizingUnit = init ? sizingUnit : valueObject.units;
+        }
+
+        value = init ? 0 : value;
 
         ngModelCtrl.$setViewValue(value + sizingUnit);
         sanityCheck();
+      }
+
+      function getModelString() {
+        return (ngModelCtrl.$viewValue || '').toString();
+      }
+
+      function getValueObject() {
+        var model = getModelString();
+
+        if (model === '') return false;
+
+        var matches = getModelString().split(/(-?\d+)/);
+
+        return {
+          value: (parseInt(matches[1]) || 0),
+          units: (matches[2] || '').trim()
+        }
       }
 
       function sanityCheck() {
         var validity = css3Lengths.indexOf(sizingUnit) != -1;
         ngModelCtrl.$setValidity('invalidUnits', validity);
       }
+
+      initialize();
     }
   }
-});
+
+}]);
