@@ -13,6 +13,7 @@ TwitchOverlay.directive('numericStepper', ['$interval', '$timeout', function ($i
           KEY_DOWN = 40;
 
       var intervalPromise = null,
+          timeoutPromise = null,
           sizingUnit = "px",
           css3Lengths = [
             // Percentage
@@ -39,6 +40,7 @@ TwitchOverlay.directive('numericStepper', ['$interval', '$timeout', function ($i
       });
 
       element.find('button').bind("blur", function (event) {
+        $timeout.cancel(timeoutPromise);
         $interval.cancel(intervalPromise);
       });
 
@@ -50,17 +52,16 @@ TwitchOverlay.directive('numericStepper', ['$interval', '$timeout', function ($i
         updateValue(-1);
       };
 
-      scope.toggleMouse = function (value) {
+      scope.toggleMouse = function (direction) {
+        $timeout.cancel(timeoutPromise);
         $interval.cancel(intervalPromise);
 
-        if (value) {
-          intervalPromise = $interval(function () {
-            if (value == 'increment') {
-              scope.increment();
-            } else {
-              scope.decrement();
-            }
-          }, 75);
+        if (direction) {
+          step(direction);
+
+          timeoutPromise = $timeout(function () {
+            startInterval(direction);
+          }, 300);
         }
       };
 
@@ -70,6 +71,20 @@ TwitchOverlay.directive('numericStepper', ['$interval', '$timeout', function ($i
           scope.ngChange();
         }, 0);
       };
+
+      function startInterval(direction) {
+        intervalPromise = $interval(function () {
+          step(direction);
+        }, 75);
+      }
+
+      function step(direction) {
+        if (direction == 'increment') {
+          scope.increment();
+        } else {
+          scope.decrement();
+        }
+      }
 
       function initialize() {
         updateValue(null, true);
