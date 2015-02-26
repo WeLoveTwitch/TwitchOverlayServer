@@ -31,24 +31,26 @@
     </div>
     <div class="panel-body">
 
-        <form class="form-inline">
+        <form name="designForm" class="form-inline">
             <div class="form-group">
-                <input
-                    type="text"
-                    class="form-control input-sm"
-                    placeholder="20px or 100%"
-                    ng-model="component.settings.left"
-                    ng-change="component.styleChanged('left')"
-                    ng-disabled="isDisabled">
+                <label>Left:</label>
+                <numeric-stepper
+                        name="left"
+                        placeholder="20px or 100%"
+                        ng-class="{ 'has-error': designForm.left.$invalid }"
+                        ng-change="component.styleChanged('left')"
+                        ng-model="component.settings.left">
+                </numeric-stepper>
             </div>
             <div class="form-group">
-                <input
-                    type="text"
-                    class="form-control input-sm"
-                    placeholder="20px or 100%"
-                    ng-model="component.settings.top"
-                    ng-change="component.styleChanged('top')"
-                    ng-disabled="isDisabled">
+                <label>Top:</label>
+                <numeric-stepper
+                        name="top"
+                        placeholder="20px or 100%"
+                        ng-class="{ 'has-error': designForm.top.$invalid }"
+                        ng-change="component.styleChanged('top')"
+                        ng-model="component.settings.top">
+                </numeric-stepper>
             </div>
         </form>
 
