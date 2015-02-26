@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/WeLoveTwitch/TwitchOverlayServer.png?label=ready&title=Ready)](https://waffle.io/WeLoveTwitch/TwitchOverlayServer)
 # TwitchOverlay
 
 This is the frontend that displays the actual overlay.
