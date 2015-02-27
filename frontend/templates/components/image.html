@@ -1,3 +1,5 @@
-<form>
-    <file-dialog on-change="component.handleImageUrl"></file-dialog>
+<form ng-controller="ImageComponentController">
+    <file-dialog></file-dialog>
+    <div ng-if="component.settings.fileName" class="image-preview" style="background-image: url(image_cache/{{component.settings.fileName}}?ts={{cacheBuster}});">
+    </div>
 </form>

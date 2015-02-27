@@ -1,9 +1,6 @@
-TwitchOverlay.directive('fileDialog', [function() {
+TwitchOverlay.directive('fileDialog', ['$rootScope', function($rootScope) {
   return {
     restrict: 'EA',
-    scope: {
-      onChange: '&'
-    },
     templateUrl: 'frontend/templates/directives/file-dialog.html',
     link: function($scope, element, attrs) {
 
@@ -15,7 +12,7 @@ TwitchOverlay.directive('fileDialog', [function() {
       });
 
       fileDialog.on('change', function() {
-        $scope.onChange($(this).val());
+        $scope.imageUrlChanged(fileDialog.val());
       });
 
     }

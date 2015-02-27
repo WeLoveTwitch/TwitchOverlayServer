@@ -1,60 +1,76 @@
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <i class="fa fa-paint-brush"></i> Overlay Design
-    </div>
-    <div class="panel-body">
-        <div class="pull-left">
-            <div class="btn-group">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <i class="fa fa-plus"></i> Add Component <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                    <li ng-repeat="component in availableComponents" ng-click="create(component)"><a href="#">{{component}}</a></li>
-                </ul>
+<div class="row">
+    <div class="col-md-12 col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-paint-brush"></i> Overlay Design
+            </div>
+            <div class="panel-body">
+                <div class="pull-left">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <i class="fa fa-plus"></i> Add Component <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li ng-repeat="component in availableComponents" ng-click="create(component)"><a href="#">{{component}}</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="pull-right">
+                    <button class="btn btn-primary" ng-click="toggleEditMode()">
+                        <i class="fa fa-cog"></i> {{ isDisabled ? "enter" : "leave" }} edit mode
+                    </button>
+
+                    <button class="btn btn-success" ng-click="saveSnapshot()">
+                        <i class="fa fa-save"></i> save snapshot
+                    </button>
+                </div>
             </div>
         </div>
-        <div class="pull-right">
-            <button class="btn btn-primary" ng-click="toggleEditMode()">
-                <i class="fa fa-cog"></i> {{ isDisabled ? "enter" : "leave" }} edit mode
-            </button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-lg-12" ng-repeat="component in activeComponents">
+        <div class="panel panel-default {{component.name}}-component">
+            <div class="panel-heading">
+                <div class="pull-left">
+                    {{component.name}} <small class="text-muted">({{component._id}})</small>
+                </div>
+                <div class="pull-right">
+                    <button class="btn btn-sm btn-danger" ng-click="remove(component._id)">
+                        <i class="fa fa-remove"></i> remove
+                    </button>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body">
 
-            <button class="btn btn-success" ng-click="saveSnapshot()">
-                <i class="fa fa-save"></i> save snapshot
-            </button>
+                <form name="designForm" class="form-inline">
+                    <div class="form-group">
+                        <label>Left:</label>
+                        <numeric-stepper
+                                name="left"
+                                placeholder="20px or 100%"
+                                ng-class="{ 'has-error': designForm.left.$invalid }"
+                                ng-change="component.styleChanged('left')"
+                                ng-model="component.settings.left">
+                        </numeric-stepper>
+                    </div>
+                    <div class="form-group">
+                        <label>Top:</label>
+                        <numeric-stepper
+                                name="top"
+                                placeholder="20px or 100%"
+                                ng-class="{ 'has-error': designForm.top.$invalid }"
+                                ng-change="component.styleChanged('top')"
+                                ng-model="component.settings.top">
+                        </numeric-stepper>
+                    </div>
+                </form>
+
+                <hr>
+                <div ng-include="'frontend/templates/components/' + component.name + '.html'"></div>
+            </div>
         </div>
     </div>
 </div>
 
-<div class="panel panel-default" ng-repeat="component in activeComponents">
-    <div class="panel-heading">
-        {{component.name}} <small class="text-muted">({{component._id}})</small>
-    </div>
-    <div class="panel-body">
-
-        <form name="designForm" class="form-inline">
-            <div class="form-group">
-                <label>Left:</label>
-                <numeric-stepper
-                        name="left"
-                        placeholder="20px or 100%"
-                        ng-class="{ 'has-error': designForm.left.$invalid }"
-                        ng-change="component.styleChanged('left')"
-                        ng-model="component.settings.left">
-                </numeric-stepper>
-            </div>
-            <div class="form-group">
-                <label>Top:</label>
-                <numeric-stepper
-                        name="top"
-                        placeholder="20px or 100%"
-                        ng-class="{ 'has-error': designForm.top.$invalid }"
-                        ng-change="component.styleChanged('top')"
-                        ng-model="component.settings.top">
-                </numeric-stepper>
-            </div>
-        </form>
-
-        <hr>
-        <div ng-include="'frontend/templates/components/' + component.name + '.html'"></div>
-    </div>
-</div>

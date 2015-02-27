@@ -2,100 +2,110 @@ var TwitchChat = require('./twitch-chat');
 var Twitch = require('./twitch');
 var ActivityStream = require('./activity-stream');
 var Database = require('./database');
-var io = require('socket.io')();
+
+var express = require('express');
+var app = express();
+var server = require('http').Server(app);
+
+var io = require('socket.io')(server);
 var ip = require('ip');
 var ComponentFactory = require('./lib/frontend-component-factory');
 
+global.PATH_IMAGE_CACHE = 'image_cache/';
+
+// serve images for the overlay
+app.use('/images', express.static(global.PATH_IMAGE_CACHE));
+
 function TwitchOverlayServer(config) {
 
-    var that = this;
+  var that = this;
 
-    this._data = {};
-    this._db = new Database();
-    this._activityStream = new ActivityStream(this._db);
+  this._data = {};
+  this._db = new Database();
+  this._activityStream = new ActivityStream(this._db);
 
-    this._chat = new TwitchChat(this._activityStream);
-    this._twitch = new Twitch(this._db, this._activityStream);
+  this._chat = new TwitchChat(this._activityStream);
+  this._twitch = new Twitch(this._db, this._activityStream);
 
-    this._componentFactory = new ComponentFactory(
-        this._db.getCollection('components'),
-        {
-            twitch: this._twitch,
-            chat: this._chat,
-            serverData: this._data
-        }
-    );
+  this._componentFactory = new ComponentFactory(
+    this._db.getCollection('components'),
+    {
+      twitch: this._twitch,
+      chat: this._chat,
+      serverData: this._data
+    }
+  );
 
-    this._sockets = [];
+  this._sockets = [];
 
-    this._configCollection = null;
-    this._configCollection = this._db.getCollection('config');
+  this._configCollection = null;
+  this._configCollection = this._db.getCollection('config');
 
-    this._configCollection.find({}, function(err, docs) {
-        docs.forEach(function(doc) {
-            that._data[doc._id] = doc.payload;
-        });
+  this._configCollection.find({}, function(err, docs) {
+    docs.forEach(function(doc) {
+      that._data[doc._id] = doc.payload;
     });
+  });
 
-    io.on('connection', function (socket) {
-        that._componentFactory.addSocket(socket);
+  io.on('connection', function(socket) {
+    that._componentFactory.addSocket(socket);
 
-        that._twitch.getEmotes(function (emotes) {
-            socket.emit('emotes', emotes);
-        });
+    that._twitch.getEmotes(function(emotes) {
+      socket.emit('emotes', emotes);
     });
+  });
 
-    this._socket = io.listen(config.port);
+  server.listen(config.port);
 
-    (function loop() {
-        setTimeout(loop, config.serverTick);
-        that._tick.call(that);
-    })();
+  (function loop() {
+    setTimeout(loop, config.serverTick);
+    that._tick.call(that);
+  })();
 }
 
 var proto = TwitchOverlayServer.prototype;
 
-proto._tick = function () {
-    this._twitch.tick();
+proto._tick = function() {
+  this._twitch.tick();
 };
 
-proto._socketConnected = function (socket) {
-    return socket.connected;
+proto._socketConnected = function(socket) {
+  return socket.connected;
 };
 
-proto.destroy = function () {
-    this._socket.close();
+proto.destroy = function() {
+  //this._socket.close();
 };
 
-proto.setConfig = function (name, payload) {
-    this._data[name] = payload;
-    var that = this;
+proto.setConfig = function(name, payload) {
+  this._data[name] = payload;
+  var that = this;
 
-    this._components.forEach(function(component) {
-        component.emit('configUpdate:' + name, payload);
-    });
+  this._components.forEach(function(component) {
+    component.emit('configUpdate:' + name, payload);
+  });
 
-    this._configCollection.find({_id: name}, function (err, docs) {
-        if (docs.length > 0) {
-            that._configCollection.update({_id: name}, {_id: name, payload: payload});
-        } else {
-            that._configCollection.insert({_id: name, payload: payload});
-        }
-    });
+  this._configCollection.find({_id: name}, function(err, docs) {
+    if (docs.length > 0) {
+      that._configCollection.update({_id: name}, {_id: name, payload: payload});
+    } else {
+      that._configCollection.insert({_id: name, payload: payload});
+    }
+  });
 };
 
-proto.getConfig = function (name) {
-    return this._data[name] || null;
+proto.getConfig = function(name) {
+  return this._data[name] || null;
 };
 
 proto.getIp = ip.address;
 
-proto.getModule = function (module) {
-    return this['_' + module];
+proto.getModule = function(module) {
+  return this['_' + module];
 };
 
-proto.getComponentFactory = function () {
-    return this._componentFactory;
+proto.getComponentFactory = function() {
+  return this._componentFactory;
 };
 
 module.exports = TwitchOverlayServer;

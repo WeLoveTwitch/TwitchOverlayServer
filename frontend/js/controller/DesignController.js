@@ -24,4 +24,9 @@ TwitchOverlay.controller('DesignController', ['$scope', 'FrontendComponents', fu
         }
     };
 
+  $scope.remove = function(id) {
+    FrontendComponents.remove(id);
+    $scope.activeComponents = FrontendComponents.getActiveComponents();
+  }
+
 }]);

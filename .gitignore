@@ -4,5 +4,6 @@
 /frontend/css
 /frontend/fonts
 /node_modules
+/image_cache
 index.html
 npm-debug.log

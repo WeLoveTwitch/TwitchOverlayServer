@@ -1,27 +1,30 @@
-TwitchOverlay.service('FrontendComponents', ['TwitchOverlayServer', function (TwitchOverlayServer) {
+TwitchOverlay.service('FrontendComponents', ['TwitchOverlayServer', function(TwitchOverlayServer) {
 
-    var server = TwitchOverlayServer.getServer();
-    var componentFactory = server.getComponentFactory();
+  var server = TwitchOverlayServer.getServer();
+  var componentFactory = server.getComponentFactory();
 
-    return {
-        startEditMode: function() {
-            componentFactory.setEditMode(true);
-        },
-        endEditMode: function() {
-            componentFactory.setEditMode(false);
-        },
-        getAvailableComponents: function() {
-            return componentFactory.getAvailableComponents();
-        },
-        getActiveComponents: function() {
-            return componentFactory.getActiveComponents();
-        },
-        create: function(type) {
-            return componentFactory.createComponent(type);
-        },
-        save: function() {
-            return componentFactory.save();
-        }
-    };
+  return {
+    startEditMode: function() {
+      componentFactory.setEditMode(true);
+    },
+    endEditMode: function() {
+      componentFactory.setEditMode(false);
+    },
+    getAvailableComponents: function() {
+      return componentFactory.getAvailableComponents();
+    },
+    getActiveComponents: function() {
+      return componentFactory.getActiveComponents();
+    },
+    create: function(type) {
+      return componentFactory.createComponent(type);
+    },
+    save: function() {
+      return componentFactory.save();
+    },
+    remove: function(id) {
+      componentFactory.removeComponent(id);
+    }
+  };
 
 }]);
