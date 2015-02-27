@@ -24,15 +24,4 @@ proto.textChanged = function() {
     });
 };
 
-proto.styleChanged = function(property, value) {
-    console.debug('Text::styleChanged', property, value, this.settings[property]);
-
-    var payload = {};
-    payload[property] = value || this.settings[property];
-
-    this._eventEmitter.emit(
-        'event', this._getEventName('text'), payload
-    );
-};
-
 module.exports = Text;

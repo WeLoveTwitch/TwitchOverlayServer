@@ -97,19 +97,14 @@ proto.setEditMode = function (onOff) {
     });
 };
 
-proto.setPosition = function (pos) {
-    console.debug('FrontendComponent::setPosition', pos);
-    this.position = pos;
-    this._eventEmitter.emit('event', this._getEventName('position'), {
-        position: this.position
-    });
-};
+proto.styleChanged = function(property, value) {
+    console.debug('FrontendComponent::styleChanged', property, value, this.settings[property]);
+    var payload = {};
+    payload[property] = value || this.settings[property];
 
-proto.positionChanged = function () {
-    console.debug('FrontendComponent::positionChanged', this.settings.position);
-    this._eventEmitter.emit('event', this._getEventName('position'), {
-        position: this.settings.position
-    });
+    this._eventEmitter.emit(
+        'event', this._getEventName(property), payload
+    );
 };
 
 module.exports = FrontendComponent;

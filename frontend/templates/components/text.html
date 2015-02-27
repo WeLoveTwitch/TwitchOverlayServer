@@ -2,27 +2,49 @@
     <div class="form-group">
         <label>Text:</label>
         <input
-            type="text"
-            class="form-control"
-            placeholder="your awesome text here"
-            ng-model="component.settings.text"
-            ng-change="component.textChanged()"
-            ng-disabled="isDisabled">
+                type="text"
+                class="form-control"
+                placeholder="your awesome text here"
+                ng-model="component.settings.text"
+                ng-change="component.textChanged()"
+                ng-disabled="isDisabled">
     </div>
+
     <div class="form-group">
         <label>Color:</label>
         <color-picker
-            class="color-preview"
-            ng-model="component.settings.color"
-            callback="component.styleChanged('color', value)">
+                class="color-preview"
+                ng-model="component.settings.color"
+                callback="component.styleChanged('color', value)">
             <div style="background: {{ component.settings.color }}"></div>
         </color-picker>
         <input
-            type="text"
-            class="form-control"
-            placeholder="#FFFFFF"
-            value="{{ component.settings.color }}"
-            ng-model="component.settings.color"
-            ng-disabled="isDisabled">
+                type="text"
+                class="form-control"
+                placeholder="#FFFFFF"
+                value="{{ component.settings.color }}"
+                ng-model="component.settings.color"
+                ng-disabled="isDisabled">
+    </div>
+
+    <div class="form-group">
+        <label>Font Size:</label>
+        <numeric-stepper
+                name="fontSize"
+                placeholder="20px or 100%"
+                ng-class="{ 'has-error': designForm.fontSize.$invalid }"
+                ng-change="component.styleChanged('fontSize')"
+                ng-model="component.settings.fontSize">
+        </numeric-stepper>
+    </div>
+
+    <div class="form-group">
+        <label>Bold:</label>
+        <input
+                type="checkbox"
+                ng-model="component.settings.fontWeight"
+                ng-true-value="700"
+                ng-false-value="300"
+                ng-change="component.styleChanged('fontWeight')"/>
     </div>
 </form>
