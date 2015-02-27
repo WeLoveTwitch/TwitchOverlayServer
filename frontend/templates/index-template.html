@@ -19,8 +19,10 @@
                     <a href="#" class="nav-toggle"><i class="fa fa-bars"></i></a>
                     <h1>{{ getCurrentState('headline') }}</h1>
                 </header>
-                <div class="main-content" ui-view>
+                <div class="main-content" nicescroll>
+                    <div ui-view>
 
+                    </div>
                 </div>
             </main>
             <div class="activity-stream" ng-include="'frontend/templates/activity-stream/activity-stream.html'"></div>

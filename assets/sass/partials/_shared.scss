@@ -8,6 +8,15 @@ body {
     background-repeat: no-repeat;
     background-position: bottom left;
     overflow: hidden;
+
+  main {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 50px;
+    right: 0;
+    bottom: 0;
+  }
 }
 
 .text-thin {
@@ -38,6 +47,8 @@ body {
         position: absolute;
         right: 300px;
         left: 0;
+        top: 50px;
+        bottom: 0;
         padding: 20px;
     }
 }
