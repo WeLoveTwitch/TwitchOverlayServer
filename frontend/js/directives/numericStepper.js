@@ -87,23 +87,27 @@ TwitchOverlay.directive('numericStepper', ['$interval', '$timeout', function ($i
       }
 
       function initialize() {
-        updateValue(null, true);
+        ngModelCtrl.$setViewValue(scope.ngModel);
       }
 
-      function updateValue(amount, init) {
-        var valueObject = getValueObject(),
-            value = '';
+      function updateValue(amount) {
+        var valueObject = getValueObject();
+        var value = '';
 
         if (valueObject) {
           value = (valueObject.value || 0);
           value = amount ? value + amount : value;
-          sizingUnit = init ? sizingUnit : valueObject.units;
+          sizingUnit = valueObject.units;
         }
 
-        value = init ? 0 : value;
+        value = value || 0;
 
-        ngModelCtrl.$setViewValue(value + sizingUnit);
+        setViewValue(value, sizingUnit);
         sanityCheck();
+      }
+
+      function setViewValue(value, sizingUnit) {
+        ngModelCtrl.$setViewValue(value + sizingUnit);
       }
 
       function getModelString() {
@@ -115,7 +119,7 @@ TwitchOverlay.directive('numericStepper', ['$interval', '$timeout', function ($i
 
         if (model === '') return false;
 
-        var matches = getModelString().split(/(-?\d+)/);
+        var matches = model.split(/(-?\d+)/);
 
         return {
           value: (parseInt(matches[1]) || 0),
